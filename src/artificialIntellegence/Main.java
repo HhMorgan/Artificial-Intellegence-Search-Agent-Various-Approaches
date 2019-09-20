@@ -4,8 +4,14 @@ public class Main {
 
 	// Directions are mapped based on D-pad clockwise 
 	// movement  where the start is the up direction.
-	final static int[] movementX = { 0, 1, 0, -1 };
-	final static int[] movementY = { -1, 0, 1, 0 };
+	static final int[] movementX = { 0, 1, 0, -1 };
+	static final int[] movementY = { -1, 0, 1, 0 };
+	//Constants that represents the types of the cell in the grid.
+	static final int EMPTYCELL = 0;
+	static final int IRONMAN = 1;
+	static final int STONECELL = 2;
+	static final int THANOS = 3;
+	static final int WARRIOR = 4;
 
 	public static String BFS() {
 		return null;
@@ -82,7 +88,7 @@ public class Main {
 		return gridInt;
 	}
 
-	public static String solve(String grid, String strategy, String visualize) {
+	public static String solve(String grid, String strategy, boolean visualize) {
 		String[] parsedString = grid.split(";");
 		String[] sizeString = parsedString[0].split(",");
 		String[] characterString = parsedString[1].split(",");
@@ -93,26 +99,26 @@ public class Main {
 		int n = Integer.parseInt(sizeString[1]);
 		int[][] gridInt = new int[m][n];
 		/*
-		 * The mapping of the values to the representation of the grid Empty Cell = 0
-		 * Iron Man = 1 Stone = 2 Thanos = 3 Warrior = 4 Mapping the types of the cell
-		 * to int would make the encoding of the problem easier, as there are not a lot
-		 * of cell types.
+		 * The mapping of the values to the representation of the grid 
+		 * Empty Cell = 0, Iron Man = 1, Stone = 2, Thanos = 3, Warrior = 4 
+		 * Mapping the types of the cell to int would make the encoding of 
+		 * the problem easier, as there are not a lot of cell types.
 		 */
 		int ix = Integer.parseInt(characterString[0]);
 		int iy = Integer.parseInt(characterString[1]);
-		gridInt[ix][iy] = 1;
+		gridInt[ix][iy] = IRONMAN;
 		for (int i = 0; i < collectableString.length - 1; i++) {
 			int sx = Integer.parseInt(collectableString[i]);
 			int sy = Integer.parseInt(collectableString[i + 1]);
-			gridInt[sx][sy] = 2;
+			gridInt[sx][sy] = STONECELL;
 		}
 		int tx = Integer.parseInt(villainString[0]);
 		int ty = Integer.parseInt(villainString[1]);
-		gridInt[tx][ty] = 3;
+		gridInt[tx][ty] = THANOS;
 		for (int i = 0; i < enemyString.length - 1; i++) {
 			int wx = Integer.parseInt(enemyString[i]);
 			int wy = Integer.parseInt(enemyString[i + 1]);
-			gridInt[wx][wy] = 4;
+			gridInt[wx][wy] = WARRIOR;
 		}
 		int collectableAmount = collectableString.length / 2;
 
