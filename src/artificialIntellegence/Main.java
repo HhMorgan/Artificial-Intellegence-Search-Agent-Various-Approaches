@@ -2,16 +2,10 @@ package artificialIntellegence;
 
 public class Main {
 
-	// Directions are mapped based on D-pad clockwise 
-	// movement  where the start is the up direction.
+	// Directions are mapped based on D-pad clockwise
+	// movement where the start is the up direction.
 	static final int[] movementX = { 0, 1, 0, -1 };
 	static final int[] movementY = { -1, 0, 1, 0 };
-	//Constants that represents the types of the cell in the grid.
-	static final int EMPTYCELL = 0;
-	static final int IRONMAN = 1;
-	static final int STONECELL = 2;
-	static final int THANOS = 3;
-	static final int WARRIOR = 4;
 
 	public static String BFS() {
 		return null;
@@ -95,32 +89,27 @@ public class Main {
 		String[] villainString = parsedString[2].split(",");
 		String[] collectableString = parsedString[3].split(",");
 		String[] enemyString = parsedString[4].split(",");
-		int m = Integer.parseInt(sizeString[0]);
-		int n = Integer.parseInt(sizeString[1]);
-		int[][] gridInt = new int[m][n];
-		/*
-		 * The mapping of the values to the representation of the grid 
-		 * Empty Cell = 0, Iron Man = 1, Stone = 2, Thanos = 3, Warrior = 4 
-		 * Mapping the types of the cell to int would make the encoding of 
-		 * the problem easier, as there are not a lot of cell types.
-		 */
-		int ix = Integer.parseInt(characterString[0]);
-		int iy = Integer.parseInt(characterString[1]);
-		gridInt[ix][iy] = IRONMAN;
-		for (int i = 0; i < collectableString.length - 1; i++) {
-			int sx = Integer.parseInt(collectableString[i]);
-			int sy = Integer.parseInt(collectableString[i + 1]);
-			gridInt[sx][sy] = STONECELL;
+		byte m = Byte.parseByte(sizeString[0], 10);
+		byte n = Byte.parseByte(sizeString[1], 10);
+		byte ix = Byte.parseByte(characterString[0], 10);
+		byte iy = Byte.parseByte(characterString[1], 10);
+		Cell[] stones = new Cell[collectableString.length / 2];
+		for (int i = 0; i < collectableString.length - 1; i += 2) {
+			byte sx = Byte.parseByte(collectableString[i], 10);
+			byte sy = Byte.parseByte(collectableString[i + 1], 10);
+			stones[i / 2] = new Cell(sx, sy);
 		}
-		int tx = Integer.parseInt(villainString[0]);
-		int ty = Integer.parseInt(villainString[1]);
-		gridInt[tx][ty] = THANOS;
+		byte tx = Byte.parseByte(villainString[0], 10);
+		byte ty = Byte.parseByte(villainString[1], 10);
+		Cell[] warriors = new Cell[enemyString.length / 2];
 		for (int i = 0; i < enemyString.length - 1; i++) {
-			int wx = Integer.parseInt(enemyString[i]);
-			int wy = Integer.parseInt(enemyString[i + 1]);
-			gridInt[wx][wy] = WARRIOR;
+			byte wx = Byte.parseByte(enemyString[i], 10);
+			byte wy = Byte.parseByte(enemyString[i + 1], 10);
+			warriors[i / 2] = new Cell(wx, wy);
 		}
-		int collectableAmount = collectableString.length / 2;
+		
+		Node initialState =  new Node(ix, iy, stones, warriors, 0, null);
+		
 
 		return null;
 	}
