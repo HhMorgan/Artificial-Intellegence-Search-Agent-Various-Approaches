@@ -1,26 +1,24 @@
 package artificialIntellegence;
 
+//A node is the state of the world at a given time step.
 public class Node {
-	byte ix;
-	byte iy;
-	Cell [] stones;
-	Cell [] warriors; 
+	Cell iron;
+	boolean [] status;
 	int depth;
 	Node node;
-	//To represent the 4 allowed actions that the state can be reached through.
-	boolean bit1; boolean bit2;
-	public Node(byte ix, byte iy, Cell [] stones, Cell [] warriors, int depth, Node node) {
-		this.ix = ix;
-		this.iy = iy;
-		this.stones = stones;
-		this.warriors = warriors;
+	char operator;
+	int cost;
+	public Node(Cell iron, boolean [] status, char operator, int cost,int depth, Node node) {
+		this.iron = iron;
+		this.status = status;
+		this.operator = operator;
+		this.cost = cost;
 		this.depth = depth;
-		this.node = node;
+		this.node = node;	
 	}
 	
-	public void setDirection(boolean bit1, boolean bit2) {
-		this.bit1 = bit1;
-		this.bit2 = bit2;
+	public String toString() {
+		return String.valueOf(this.operator);
 	}
-
+	
 }
