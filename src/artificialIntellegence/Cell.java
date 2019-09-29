@@ -9,11 +9,15 @@ public class Cell{
 		this.y = y;
 	}
 	
-	public int getX() {
+	public byte getX() {
 		return this.x;
 	}
 	
-	public int getY() {
+	public byte getY() {
 		return this.y;
+	}
+	
+	public String toString() {
+		return this.x + "," + this.y;
 	}
 }
