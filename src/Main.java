@@ -1,7 +1,9 @@
 import generic.Node;
 import generic.Cell;
 import problemStatment.EndGame;
-import search.SearchInvoker;
+import search.BFS;
+import search.DFS;
+import search.Search;
 
 public class Main {
 	
@@ -43,7 +45,12 @@ public class Main {
 		}
 		Node initialState = new Node(gridStatus,'s', 0, 0, null);
 		EndGame problem = new EndGame(initialState, encoding);
-		Node goal = SearchInvoker.BFS(problem);
+		//search strategy determination.
+		Node goal = null;
+		switch(strategy) {
+			case "BFS" : goal = Search.search(problem, new BFS());break;
+			case "DFS" : goal = Search.search(problem, new DFS());break;
+		}
 		
 		String result = (goal != null)? goal.toString() : "There is no solution.";
 		
@@ -55,6 +62,7 @@ public class Main {
 		String grid = " 5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2,3,4,4,3";
 		//String grid = "10,10;7,7;5,9;0,2,3,7,5,4,8,6,8,9,9,1;0,3,4,5,8,3,9,7,9,3";
 		//String grid = "15,15;7,7;5,9;0,2,3,7,5,4,8,12,11,6,13,10;0,3,4,5,8,3,9,7,14,3";
+		//String grid = "100,100;50,50;25,25;10,20,35,75,40,65,47,90,53,89,80,4;5,15,26,79,38,70,66,77,90,90";
 		//String grid = " 4,4;2,0;2,3;0,2,0,3,1,0,2,1,3,2,3,3;1,2";
 		System.out.println(solve(grid,"BFS",false));
 

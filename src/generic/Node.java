@@ -39,7 +39,7 @@ public class Node{
 	}
 	
 	public String toString() {
-		return String.valueOf(this.operator) + "/" + ((AvengersState)this.getState()).getIron() + "?" +this.parent;
+		return String.valueOf(this.operator) + "/" + ((AvengersState)this.getState()).getIron() + "?" + this.parent;
 	}
 	
 }
