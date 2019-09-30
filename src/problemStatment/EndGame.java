@@ -2,6 +2,8 @@ package problemStatment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
 
 import generic.Node;
 import generic.Cell;
@@ -9,7 +11,7 @@ import generic.Node;
 import generic.Problem;
 
 //A problem is a 5 tuple which states the problem and has the initial state of the world.
-public class EndGame extends Problem{
+public class EndGame extends Problem {
 	// Directions are mapped based on D-pad clockwise
 	// movement where the start is the up direction.
 	static final byte[] movementX = { -1, 0, 1, 0 };
@@ -18,64 +20,34 @@ public class EndGame extends Problem{
 	private static final char[] operators = { 'u', 'r', 'd', 'l', 'c', 'k', 'e' };
 	private Node initialState;
 	private Cell[] coordinates;
-	private ArrayList<Node> statespace;
+	private HashSet<Node> statespace;
 
 	public EndGame(Node initialState, Cell[] coordinates) {
 		this.initialState = initialState;
 		this.coordinates = coordinates;
-		this.statespace = new ArrayList<Node>();
+		this.statespace = new HashSet<Node>();
 	}
 
 	public Node getInitialState() {
 		return this.initialState;
 	}
-	
+
 	// The AddState function adds a give state to the state space of the problem.
 	public void addState(Node node) {
 		this.statespace.add(node);
 	}
-	
+
 	public void removeState(Node node) {
 		this.statespace.remove(node);
 	}
 
+	
 	// IsVisitedState predicate checks if the state is repeated.
 	public boolean isVisitedState(Node node) {
-		if(node.getOperator() != 'e')
-		for (Node previousState : this.statespace) {
-				if (node.getIron().getX() == previousState.getIron().getX() && node.getIron().getY() == previousState.getIron().getY()) {
 
-					boolean match = true;
-					//int i;
-					for (int i = 2; i < node.getStatus().length; i++) {
-						//System.out.print((node.getStatus()[i] != previousState.getStatus()[i]) + ",");
-						if (node.getStatus()[i] != previousState.getStatus()[i]) {
-							match = false;
-							break;
-						}
-//						if(i > 2 && i < 8 && node.getStatus()[i] && node.getIron().getX() == coordinates[i].getX() && node.getIron().getY() == coordinates[i].getY()) {
-//							match = false;
-//							break;
-//						}
-					}
-					//System.out.println();
-					// System.out.println(i + "," + (node.getStatus()[i-1] !=
-					// previousState.getStatus()[i-1]));
-					if (match) {
-						
-						if ((node.getOperator() == 'k' && node.getOperator() == previousState.getOperator())
-								|| (node.getOperator() == 'c' && node.getOperator() == previousState.getOperator())) {
-							//System.out.println("REMOVED FROM : " + previousState);
-							//System.out.println("Breaker : " + previousState);
-							return true;
-						}
-						else {
-							if(node.getOperator() != 'k' && node.getOperator() != 'c') {
-								//System.out.println("REMOVED FROM : " + previousState);
-								return true;
-							}
-						}
-					}
+		if (node.getOperator() != 'e') {
+			if (statespace.contains(node)) {
+				return true;
 			}
 		}
 		return false;
@@ -142,8 +114,9 @@ public class EndGame extends Problem{
 		// Transition Iron Man to Snap.
 		if (((iron.getX() == this.coordinates[1].getX()) && (iron.getY() == this.coordinates[1].getY()))) {
 			if (this.isCollectedStones(node)) {
-				//System.out.println("ISCOLLECTED!!!!!!!!");
-				Node successorState = new Node(iron, node.getStatus(), operators[6], node.getCost(), node.getDepth() + 1, node);
+				// System.out.println("ISCOLLECTED!!!!!!!!");
+				Node successorState = new Node(iron, node.getStatus(), operators[6], node.getCost(),
+						node.getDepth() + 1, node);
 				successorStates.add(successorState);
 			}
 		} else {
@@ -153,7 +126,7 @@ public class EndGame extends Problem{
 					if (((iron.getX() == this.coordinates[i].getX()) && (iron.getY() == this.coordinates[i].getY()))) {
 						collectStone = true;
 						collectedStone = i;
-						//System.out.println("STONE : "+ i);
+						// System.out.println("STONE : "+ i);
 					}
 				}
 			}
@@ -167,7 +140,8 @@ public class EndGame extends Problem{
 
 					}
 				}
-				Node successorState = new Node(iron, SuccessorStatus, operators[4], node.getCost(), node.getDepth() + 1, node);
+				Node successorState = new Node(iron, SuccessorStatus, operators[4], node.getCost(), node.getDepth() + 1,
+						node);
 				successorStates.add(successorState);
 			}
 			// Allowed moves in a state.
@@ -199,8 +173,8 @@ public class EndGame extends Problem{
 								if (this.isCollectedStones(node)) {
 									Cell SuccessorIron = new Cell(Byte.valueOf((byte) (iron.getX() + movementX[i])),
 											Byte.valueOf((byte) (iron.getY() + movementY[i])));
-									Node successorState = new Node(SuccessorIron, node.getStatus(), operators[i], node.getCost(),
-											node.getDepth() + 1, node);
+									Node successorState = new Node(SuccessorIron, node.getStatus(), operators[i],
+											node.getCost(), node.getDepth() + 1, node);
 									successorStates.add(successorState);
 								}
 							} else {
@@ -209,8 +183,8 @@ public class EndGame extends Problem{
 										Byte.valueOf((byte) (iron.getY() + movementY[i])));
 								// System.out.println(SuccessorIron.x + ","+ SuccessorIron.y);
 								int costSuccessor = node.getCost() + this.cost(SuccessorIron, node.getStatus());
-								Node successorState = new Node(SuccessorIron, node.getStatus(), operators[i], costSuccessor,
-										node.getDepth() + 1, node);
+								Node successorState = new Node(SuccessorIron, node.getStatus(), operators[i],
+										costSuccessor, node.getDepth() + 1, node);
 								successorStates.add(successorState);
 							}
 						} else {

@@ -11,7 +11,7 @@ import problemStatment.EndGame;
 public class SearchInvoker extends GenericSearch{
 	
 	public static Node BFS(EndGame problem) {
-		//int limit = 50;
+		//int limit = 10;
 		Queue<Node> nodes= new LinkedList<>(); 
 		nodes.add(problem.getInitialState());
 		problem.addState(problem.getInitialState());

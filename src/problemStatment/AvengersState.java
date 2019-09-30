@@ -53,8 +53,10 @@ public class AvengersState extends State {
 					}
 				}
 			}
+			return 0;
 		}
-		return 0;
+		//System.out.println(otherAvengerState.iron);
+		return this.iron.compareTo(otherAvengerState.iron);
 	}
 
 }
