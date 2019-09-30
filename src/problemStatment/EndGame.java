@@ -1,26 +1,35 @@
-package artificialIntellegence;
+package problemStatment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import generic.Node;
+import generic.Cell;
+import generic.Node;
+import generic.Problem;
+
 //A problem is a 5 tuple which states the problem and has the initial state of the world.
-public class Problem {
+public class EndGame extends Problem{
 	// Directions are mapped based on D-pad clockwise
 	// movement where the start is the up direction.
 	static final byte[] movementX = { -1, 0, 1, 0 };
 	static final byte[] movementY = { 0, 1, 0, -1 };
 	// up, right, down, left, collect, kill, snap
-	private static final char[] action = { 'u', 'r', 'd', 'l', 'c', 'k', 'e' };
-	Node initialState;
+	private static final char[] operators = { 'u', 'r', 'd', 'l', 'c', 'k', 'e' };
+	private Node initialState;
 	private Cell[] coordinates;
 	private ArrayList<Node> statespace;
 
-	public Problem(Node initialState, Cell[] coordinates) {
+	public EndGame(Node initialState, Cell[] coordinates) {
 		this.initialState = initialState;
 		this.coordinates = coordinates;
 		this.statespace = new ArrayList<Node>();
 	}
 
+	public Node getInitialState() {
+		return this.initialState;
+	}
+	
 	// The AddState function adds a give state to the state space of the problem.
 	public void addState(Node node) {
 		this.statespace.add(node);
@@ -31,37 +40,37 @@ public class Problem {
 	}
 
 	// IsVisitedState predicate checks if the state is repeated.
-	public static boolean isVisitedState(Problem problem, Node node) {
-		if(node.operator != 'e')
-		for (Node previousState : problem.statespace) {
-				if (node.iron.getX() == previousState.iron.getX() && node.iron.getY() == previousState.iron.getY()) {
+	public boolean isVisitedState(Node node) {
+		if(node.getOperator() != 'e')
+		for (Node previousState : this.statespace) {
+				if (node.getIron().getX() == previousState.getIron().getX() && node.getIron().getY() == previousState.getIron().getY()) {
 
 					boolean match = true;
 					//int i;
-					for (int i = 2; i < node.status.length; i++) {
-						//System.out.print((node.status[i] != previousState.status[i]) + ",");
-						if (node.status[i] != previousState.status[i]) {
+					for (int i = 2; i < node.getStatus().length; i++) {
+						//System.out.print((node.getStatus()[i] != previousState.getStatus()[i]) + ",");
+						if (node.getStatus()[i] != previousState.getStatus()[i]) {
 							match = false;
 							break;
 						}
-//						if(i > 2 && i < 8 && node.status[i] && node.iron.getX() == coordinates[i].getX() && node.iron.getY() == coordinates[i].getY()) {
+//						if(i > 2 && i < 8 && node.getStatus()[i] && node.getIron().getX() == coordinates[i].getX() && node.getIron().getY() == coordinates[i].getY()) {
 //							match = false;
 //							break;
 //						}
 					}
 					//System.out.println();
-					// System.out.println(i + "," + (node.status[i-1] !=
-					// previousState.status[i-1]));
+					// System.out.println(i + "," + (node.getStatus()[i-1] !=
+					// previousState.getStatus()[i-1]));
 					if (match) {
 						
-						if ((node.operator == 'k' && node.operator == previousState.operator)
-								|| (node.operator == 'c' && node.operator == previousState.operator)) {
+						if ((node.getOperator() == 'k' && node.getOperator() == previousState.getOperator())
+								|| (node.getOperator() == 'c' && node.getOperator() == previousState.getOperator())) {
 							//System.out.println("REMOVED FROM : " + previousState);
 							//System.out.println("Breaker : " + previousState);
 							return true;
 						}
 						else {
-							if(node.operator != 'k' && node.operator != 'c') {
+							if(node.getOperator() != 'k' && node.getOperator() != 'c') {
 								//System.out.println("REMOVED FROM : " + previousState);
 								return true;
 							}
@@ -74,10 +83,10 @@ public class Problem {
 
 	// The IsCollectedStones predicate checks if all the stones are collected in the
 	// world or not.
-	public static boolean isCollectedStones(Node node) {
+	public boolean isCollectedStones(Node node) {
 		boolean stones = true;
 		for (int i = 2; i < 8; i++) {
-			if (node.status[i]) {
+			if (node.getStatus()[i]) {
 				stones = false;
 				break;
 			}
@@ -86,10 +95,10 @@ public class Problem {
 	}
 
 	// The GoalTest predicate checks if the state is a goal state of not.
-	public static boolean goalTest(Node node) {
-		if (isCollectedStones(node)) {
-//			System.out.println(node.cost);
-			if (node.operator == 'e' && node.cost < 100) {
+	public boolean goalTest(Node node) {
+		if (this.isCollectedStones(node)) {
+//			System.out.println(node.getCost());
+			if (node.getOperator() == 'e' && node.getCost() < 100) {
 //				System.out.println("SNAPPED!!!!");
 				return true;
 			}
@@ -99,23 +108,23 @@ public class Problem {
 
 	// The Cost function computes the damage units inflicted to Iron Man at a given
 	// state.
-	public static int cost(Problem problem,Cell iron, boolean[] status) {
-		Cell gridBorders = problem.coordinates[0];
+	public int cost(Cell iron, boolean[] status) {
+		Cell gridBorders = this.coordinates[0];
 		int dmg = 0;
 		for (int i = 0; i < 4; i++) {
 			if (iron.getX() + movementX[i] >= 0 && iron.getX() + movementX[i] < gridBorders.getX()
 					&& iron.getY() + movementY[i] > 0 && iron.getY() + movementY[i] < gridBorders.getY()) {
-				for (int j = 8; j < problem.coordinates.length; j++) {
+				for (int j = 8; j < this.coordinates.length; j++) {
 					if (status[j]) {
-						if (((iron.getX() + movementX[i] == problem.coordinates[j].getX())
-								&& (iron.getY() + movementY[i] == problem.coordinates[j].getY()))) {
+						if (((iron.getX() + movementX[i] == this.coordinates[j].getX())
+								&& (iron.getY() + movementY[i] == this.coordinates[j].getY()))) {
 							dmg += 1;
 						}
 					}
 				}
 			}
-			if (((iron.getX() + movementX[i] == problem.coordinates[1].getX())
-					&& (iron.getY() + movementY[i] == problem.coordinates[1].getY()))) {
+			if (((iron.getX() + movementX[i] == this.coordinates[1].getX())
+					&& (iron.getY() + movementY[i] == this.coordinates[1].getY()))) {
 				dmg += 5;
 			}
 		}
@@ -124,24 +133,24 @@ public class Problem {
 
 	// The Transition function is the function that computes the expansion of some
 	// give state.
-	public static ArrayList<Node> transition(Problem problem, Node node) {
+	public ArrayList<Node> transition(Node node) {
 		ArrayList<Node> successorStates = new ArrayList<Node>();
-		Cell iron = node.iron;
-		Cell gridBorders = problem.coordinates[0];
+		Cell iron = node.getIron();
+		Cell gridBorders = this.coordinates[0];
 		boolean collectStone = false;
 		int collectedStone = -1;
 		// Transition Iron Man to Snap.
-		if (((iron.getX() == problem.coordinates[1].getX()) && (iron.getY() == problem.coordinates[1].getY()))) {
-			if (isCollectedStones(node)) {
+		if (((iron.getX() == this.coordinates[1].getX()) && (iron.getY() == this.coordinates[1].getY()))) {
+			if (this.isCollectedStones(node)) {
 				//System.out.println("ISCOLLECTED!!!!!!!!");
-				Node successorState = new Node(iron, node.status, action[6], node.cost, node.depth + 1, node);
+				Node successorState = new Node(iron, node.getStatus(), operators[6], node.getCost(), node.getDepth() + 1, node);
 				successorStates.add(successorState);
 			}
 		} else {
 			// Collect a stone in the cell.
 			for (int i = 2; i < 8; i++) {
-				if (node.status[i]) {
-					if (((iron.getX() == problem.coordinates[i].getX()) && (iron.getY() == problem.coordinates[i].getY()))) {
+				if (node.getStatus()[i]) {
+					if (((iron.getX() == this.coordinates[i].getX()) && (iron.getY() == this.coordinates[i].getY()))) {
 						collectStone = true;
 						collectedStone = i;
 						//System.out.println("STONE : "+ i);
@@ -149,16 +158,16 @@ public class Problem {
 				}
 			}
 			if (collectStone) {
-				boolean[] SuccessorStatus = new boolean[node.status.length];
-				for (int k = 0; k < node.status.length; k++) {
+				boolean[] SuccessorStatus = new boolean[node.getStatus().length];
+				for (int k = 0; k < node.getStatus().length; k++) {
 					if (k != collectedStone) {
-						SuccessorStatus[k] = node.status[k];
+						SuccessorStatus[k] = node.getStatus()[k];
 					} else {
 						SuccessorStatus[k] = false;
 
 					}
 				}
-				Node successorState = new Node(iron, SuccessorStatus, action[4], node.cost, node.depth + 1, node);
+				Node successorState = new Node(iron, SuccessorStatus, operators[4], node.getCost(), node.getDepth() + 1, node);
 				successorStates.add(successorState);
 			}
 			// Allowed moves in a state.
@@ -172,10 +181,10 @@ public class Problem {
 						// checks if there is a warrior in the adjacent cell.
 						boolean flag = true;
 						int warriorLocation = -1;
-						for (int j = 8; j < problem.coordinates.length; j++) {
-							if (node.status[j]) {
-								if (((iron.getX() + movementX[i] == problem.coordinates[j].getX())
-										&& (iron.getY() + movementY[i] == problem.coordinates[j].getY()))) {
+						for (int j = 8; j < this.coordinates.length; j++) {
+							if (node.getStatus()[j]) {
+								if (((iron.getX() + movementX[i] == this.coordinates[j].getX())
+										&& (iron.getY() + movementY[i] == this.coordinates[j].getY()))) {
 									warriorLocation = j;
 									flag = false;
 									break;
@@ -185,13 +194,13 @@ public class Problem {
 						if (flag) {
 							// checks if Thanos is adjacent and all of the stones are collected to
 							// transition of the goal state.
-							if (((iron.getX() + movementX[i] == problem.coordinates[1].getX())
-									&& (iron.getY() + movementY[i] == problem.coordinates[1].getY()))) {
-								if (isCollectedStones(node)) {
+							if (((iron.getX() + movementX[i] == this.coordinates[1].getX())
+									&& (iron.getY() + movementY[i] == this.coordinates[1].getY()))) {
+								if (this.isCollectedStones(node)) {
 									Cell SuccessorIron = new Cell(Byte.valueOf((byte) (iron.getX() + movementX[i])),
 											Byte.valueOf((byte) (iron.getY() + movementY[i])));
-									Node successorState = new Node(SuccessorIron, node.status, action[i], node.cost,
-											node.depth + 1, node);
+									Node successorState = new Node(SuccessorIron, node.getStatus(), operators[i], node.getCost(),
+											node.getDepth() + 1, node);
 									successorStates.add(successorState);
 								}
 							} else {
@@ -199,25 +208,25 @@ public class Problem {
 								Cell SuccessorIron = new Cell(Byte.valueOf((byte) (iron.getX() + movementX[i])),
 										Byte.valueOf((byte) (iron.getY() + movementY[i])));
 								// System.out.println(SuccessorIron.x + ","+ SuccessorIron.y);
-								int costSuccessor = node.cost + cost(problem, SuccessorIron, node.status);
-								Node successorState = new Node(SuccessorIron, node.status, action[i], costSuccessor,
-										node.depth + 1, node);
+								int costSuccessor = node.getCost() + this.cost(SuccessorIron, node.getStatus());
+								Node successorState = new Node(SuccessorIron, node.getStatus(), operators[i], costSuccessor,
+										node.getDepth() + 1, node);
 								successorStates.add(successorState);
 							}
 						} else {
 							// Eliminate a warrior that is adjacent to Iron Man.
 							if (!flag) {
-								boolean[] SuccessorStatus = new boolean[node.status.length];
-								for (int k = 0; k < node.status.length; k++) {
+								boolean[] SuccessorStatus = new boolean[node.getStatus().length];
+								for (int k = 0; k < node.getStatus().length; k++) {
 									if (k != warriorLocation) {
-										SuccessorStatus[k] = node.status[k];
+										SuccessorStatus[k] = node.getStatus()[k];
 									} else {
 										SuccessorStatus[k] = false;
 									}
 								}
-								int costSuccessor = node.cost + cost(problem, node.iron, node.status) + 2;
-								Node successorState = new Node(iron, SuccessorStatus, action[5], costSuccessor,
-										node.depth + 1, node);
+								int costSuccessor = node.getCost() + this.cost(node.getIron(), node.getStatus()) + 2;
+								Node successorState = new Node(iron, SuccessorStatus, operators[5], costSuccessor,
+										node.getDepth() + 1, node);
 								successorStates.add(successorState);
 							}
 						}

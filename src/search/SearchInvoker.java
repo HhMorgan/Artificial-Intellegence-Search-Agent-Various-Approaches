@@ -1,28 +1,31 @@
-package artificialIntellegence;
+package search;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-public class EndGame extends GenericSearch{
+import generic.Node;
+import problemStatment.EndGame;
+
+public class SearchInvoker extends GenericSearch{
 	
-	public static Node BFS(Problem problem) {
+	public static Node BFS(EndGame problem) {
 		//int limit = 50;
 		Queue<Node> nodes= new LinkedList<>(); 
-		nodes.add(problem.initialState);
-		problem.addState(problem.initialState);
+		nodes.add(problem.getInitialState());
+		problem.addState(problem.getInitialState());
 		while (!nodes.isEmpty()) {
 //			if(limit <= 0)
 //				break;
 			Node node = nodes.poll();
 			//System.out.println(node);
-			if (Problem.goalTest(node)) {
+			if (problem.goalTest(node)) {
 //				System.out.println("Hi?");
 //				System.out.println("Goal" + node);
 				return node;
 			}
-			ArrayList<Node> successorStates = Problem.transition(problem, node);
+			ArrayList<Node> successorStates = problem.transition(node);
 //			System.out.print("Transition : " );
 //			for(Node n : nodes) { 
 //				  System.out.print( n.toString() + "  |A|  "); 
@@ -31,7 +34,7 @@ public class EndGame extends GenericSearch{
 			
 			int successorStatesLength = successorStates.size();
 			for(int l = 0; l < successorStates.size(); l++) {
-				if (Problem.isVisitedState(problem, successorStates.get(l))) {
+				if (problem.isVisitedState(successorStates.get(l))) {
 					//System.out.println("REMOVED : "+successorStates.get(l));
 //					successorStates.remove(0);
 					successorStatesLength --;

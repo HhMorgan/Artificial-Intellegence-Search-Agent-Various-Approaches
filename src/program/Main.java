@@ -1,6 +1,11 @@
-package artificialIntellegence;
+package program;
 
 import java.util.Arrays;
+
+import generic.Node;
+import generic.Cell;
+import problemStatment.EndGame;
+import search.SearchInvoker;
 
 public class Main {
 
@@ -8,8 +13,8 @@ public class Main {
 		String path = "";
 		Node prevNode = node;
 		while (prevNode != null) {
-			path += (prevNode.operator + ";");
-			prevNode = prevNode.parent;
+			path += (prevNode.getOperator() + ";");
+			prevNode = prevNode.getParent();
 		}
 		return path;
 	}
@@ -47,9 +52,9 @@ public class Main {
 		boolean[] status = new boolean[encoding.length];
 		Arrays.fill(status, true);
 		Node initialState = new Node(iron, status,'s', 0, 0, null);
-		Problem problem = new Problem(initialState, encoding);
+		EndGame problem = new EndGame(initialState, encoding);
 		//EndGame.BFS(problem);
-		Node goal = EndGame.BFS(problem);
+		Node goal = SearchInvoker.BFS(problem);
 		//System.out.println("Goal : " + goal);
 		return goal.toString();
 		//return null;

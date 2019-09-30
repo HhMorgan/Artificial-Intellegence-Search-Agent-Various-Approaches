@@ -1,4 +1,4 @@
-package artificialIntellegence;
+package generic;
 
 //A cell is the representation of cell in the grid map of the game.
 public class Cell{
