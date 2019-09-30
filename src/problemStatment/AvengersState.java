@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import generic.Cell;
-import generic.Node;
 import generic.State;
 
 public class AvengersState extends State {

@@ -1,11 +1,10 @@
 package generic;
 
-import generic.Node;
 import problemStatment.AvengersState;
 
 //A node is the state of the world at a given time step.
 public class Node{
-	private AvengersState state;
+	private State state;
 	private int depth;
 	private Node parent;
 	private char operator;
@@ -19,16 +18,8 @@ public class Node{
 		this.parent = parent;	
 	}
 	
-	public AvengersState getState() {
+	public State getState() {
 		return this.state;
-	}
-	
-	public Cell getIron() {
-		return this.state.getIron();
-	}
-	
-	public byte[] getStatus() {
-		return this.state.getStatus();
 	}
 	
 	public int getDepth() {
@@ -48,7 +39,7 @@ public class Node{
 	}
 	
 	public String toString() {
-		return String.valueOf(this.operator) + "/" + this.getIron() + "?" +this.parent;
+		return String.valueOf(this.operator) + "/" + ((AvengersState)this.getState()).getIron() + "?" +this.parent;
 	}
 	
 }

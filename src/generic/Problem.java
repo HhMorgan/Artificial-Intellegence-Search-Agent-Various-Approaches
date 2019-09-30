@@ -27,9 +27,9 @@ public abstract class Problem {
 		return statespace;
 	}
 	
-	//public abstract void addState(Node node);
+	public abstract void addState(State state);
 	
-	//public abstract void removeState(Node node);
+	public abstract void removeState(State state);
 	
 	public abstract boolean isVisitedState(Node node);
 	

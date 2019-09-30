@@ -3,9 +3,11 @@ package problemStatment;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+
 import generic.Node;
 import generic.Cell;
 import generic.Problem;
+import generic.State;
 
 //A problem is a 5 tuple which states the problem and has the initial state of the world.
 public class EndGame extends Problem {
@@ -32,12 +34,12 @@ public class EndGame extends Problem {
 	}
 
 	// The AddState function adds a give state to the state space of the problem.
-	public void addState(AvengersState state) {
-		this.statespace.add(state);
+	public void addState(State state) {
+		this.statespace.add((AvengersState)state);
 	}
 
-	public void removeState(AvengersState state) {
-		this.statespace.remove(state);
+	public void removeState(State state) {
+		this.statespace.remove((AvengersState)state);
 	}
 
 	
@@ -56,7 +58,7 @@ public class EndGame extends Problem {
 	public boolean isCollectedStones(Node node) {
 		boolean stones = true;
 		for (int i = 2; i < 8; i++) {
-			if (node.getStatus()[i] == 1) {
+			if (((AvengersState)node.getState()).getStatus()[i] == 1) {
 				stones = false;
 				break;
 			}
@@ -103,7 +105,7 @@ public class EndGame extends Problem {
 	// give state.
 	public ArrayList<Node> transition(Node node) {
 		ArrayList<Node> successorStates = new ArrayList<Node>();
-		Cell iron = node.getIron();
+		Cell iron = ((AvengersState)node.getState()).getIron();
 		Cell gridBorders = this.coordinates[0];
 		boolean collectStone = false;
 		int collectedStone = -1;
@@ -111,14 +113,14 @@ public class EndGame extends Problem {
 		if (((iron.getX() == this.coordinates[1].getX()) && (iron.getY() == this.coordinates[1].getY()))) {
 			if (this.isCollectedStones(node)) {
 				//TODO Change thanos byte 3 value
-				Node successorState = new Node(node.getState().getGridStatus(), operators.getOperators()[6], node.getCost(),
+				Node successorState = new Node(((AvengersState)node.getState()).getGridStatus(), operators.getOperators()[6], node.getCost(),
 						node.getDepth() + 1, node);
 				successorStates.add(successorState);
 			}
 		} else {
 			// Collect a stone in the cell.
 			for (int i = 2; i < 8; i++) {
-				if (node.getStatus()[i] == 1) {
+				if (((AvengersState)node.getState()).getStatus()[i] == 1) {
 					if (((iron.getX() == this.coordinates[i].getX()) && (iron.getY() == this.coordinates[i].getY()))) {
 						collectStone = true;
 						collectedStone = i + 2;
@@ -127,10 +129,10 @@ public class EndGame extends Problem {
 				}
 			}
 			if (collectStone) {
-				byte[] SuccessorGridStatus = new byte[node.getState().getGridStatus().length];
-				for (int k = 0; k < node.getStatus().length; k++) {
+				byte[] SuccessorGridStatus = new byte[((AvengersState)node.getState()).getGridStatus().length];
+				for (int k = 0; k < ((AvengersState)node.getState()).getStatus().length; k++) {
 					if (k != collectedStone) {
-						SuccessorGridStatus[k] = node.getState().getGridStatus()[k];
+						SuccessorGridStatus[k] = ((AvengersState)node.getState()).getGridStatus()[k];
 					} else {
 						SuccessorGridStatus[k] = 0;
 
@@ -152,7 +154,7 @@ public class EndGame extends Problem {
 						boolean flag = true;
 						int warriorLocation = -1;
 						for (int j = 8; j < this.coordinates.length; j++) {
-							if (node.getStatus()[j] == 1) {
+							if (((AvengersState)node.getState()).getStatus()[j] == 1) {
 								if (((iron.getX() + movementX[i] == this.coordinates[j].getX())
 										&& (iron.getY() + movementY[i] == this.coordinates[j].getY()))) {
 									warriorLocation = j + 2;
@@ -169,11 +171,11 @@ public class EndGame extends Problem {
 								if (this.isCollectedStones(node)) {
 									Cell SuccessorIron = new Cell(Byte.valueOf((byte) (iron.getX() + movementX[i])),
 											Byte.valueOf((byte) (iron.getY() + movementY[i])));
-									byte[] SuccessorGridStatus = new byte[node.getState().getGridStatus().length];
+									byte[] SuccessorGridStatus = new byte[((AvengersState)node.getState()).getGridStatus().length];
 									SuccessorGridStatus[0] = SuccessorIron.getX();
 									SuccessorGridStatus[1] = SuccessorIron.getY();
-									for(int j = 2; j < node.getState().getGridStatus().length; j++) {
-										SuccessorGridStatus[j] = node.getState().getGridStatus()[j];
+									for(int j = 2; j < ((AvengersState)node.getState()).getGridStatus().length; j++) {
+										SuccessorGridStatus[j] = ((AvengersState)node.getState()).getGridStatus()[j];
 									}
 									Node successorState = new Node(SuccessorGridStatus, operators.getOperators()[i],
 											node.getCost(), node.getDepth() + 1, node);
@@ -183,13 +185,13 @@ public class EndGame extends Problem {
 								// Transition to the successor state where Iron man moved to an empty cell.
 								Cell SuccessorIron = new Cell(Byte.valueOf((byte) (iron.getX() + movementX[i])),
 										Byte.valueOf((byte) (iron.getY() + movementY[i])));
-								byte[] SuccessorGridStatus = new byte[node.getState().getGridStatus().length];
+								byte[] SuccessorGridStatus = new byte[((AvengersState)node.getState()).getGridStatus().length];
 								SuccessorGridStatus[0] = SuccessorIron.getX();
 								SuccessorGridStatus[1] = SuccessorIron.getY();
-								for(int j = 2; j < node.getState().getGridStatus().length; j++) {
-									SuccessorGridStatus[j] = node.getState().getGridStatus()[j];
+								for(int j = 2; j < ((AvengersState)node.getState()).getGridStatus().length; j++) {
+									SuccessorGridStatus[j] = ((AvengersState)node.getState()).getGridStatus()[j];
 								}
-								int costSuccessor = node.getCost() + this.cost(SuccessorIron, node.getStatus());
+								int costSuccessor = node.getCost() + this.cost(SuccessorIron, ((AvengersState)node.getState()).getStatus());
 								Node successorState = new Node(SuccessorGridStatus, operators.getOperators()[i],
 										costSuccessor, node.getDepth() + 1, node);
 								successorStates.add(successorState);
@@ -198,16 +200,16 @@ public class EndGame extends Problem {
 							// Eliminate a warrior that is adjacent to Iron Man.
 							if (!flag) {
 								
-								byte[] SuccessorGridStatus = new byte[node.getState().getGridStatus().length];
-								for (int k = 0; k < node.getStatus().length; k++) {
+								byte[] SuccessorGridStatus = new byte[((AvengersState)node.getState()).getGridStatus().length];
+								for (int k = 0; k < ((AvengersState)node.getState()).getStatus().length; k++) {
 									if (k != warriorLocation) {
-										SuccessorGridStatus[k] = node.getState().getGridStatus()[k];
+										SuccessorGridStatus[k] = ((AvengersState)node.getState()).getGridStatus()[k];
 									} else {
 										SuccessorGridStatus[k] = 0;
 
 									}
 								}
-								int costSuccessor = node.getCost() + this.cost(node.getIron(), node.getStatus()) + 2;
+								int costSuccessor = node.getCost() + this.cost(((AvengersState)node.getState()).getIron(), ((AvengersState)node.getState()).getStatus()) + 2;
 								Node successorState = new Node(SuccessorGridStatus, operators.getOperators()[5], costSuccessor,
 										node.getDepth() + 1, node);
 								successorStates.add(successorState);
