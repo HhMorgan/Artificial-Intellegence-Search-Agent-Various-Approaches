@@ -12,7 +12,7 @@ public abstract class GenericSearch {
 	public static Node search(EndGame problem, Comparator<Node> queuingFunction) {
 		PriorityQueue<Node> nodes = new PriorityQueue<Node>(queuingFunction);
 		nodes.add(problem.getInitialState());
-		problem.addState(problem.getInitialState());
+		problem.addState(problem.getInitialState().getState());
 		while (!nodes.isEmpty()) {
 			Node node = nodes.poll();
 			if (problem.goalTest(node)) {
@@ -23,7 +23,7 @@ public abstract class GenericSearch {
 				if (problem.isVisitedState(successorStates.get(0))) {
 					successorStates.remove(0);
 				} else {
-					problem.addState(successorStates.get(0));
+					problem.addState(successorStates.get(0).getState());
 					nodes.add(successorStates.remove(0));
 				}
 			}

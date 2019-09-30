@@ -9,7 +9,7 @@ public abstract class Problem {
 	private Operators Operators;
 	private Node initialSate;
 	private Cell[] coordinates;
-	private ArrayList<Node> statespace;
+	private ArrayList<State> statespace;
 	
 	public Operators getOperators() {
 		return Operators;
@@ -23,19 +23,19 @@ public abstract class Problem {
 		return coordinates;
 	}
 	
-	public ArrayList<Node> getStatespace() {
+	public ArrayList<State> getStatespace() {
 		return statespace;
 	}
 	
-	public abstract void addState(Node node);
+	//public abstract void addState(Node node);
 	
-	public abstract void removeState(Node node);
+	//public abstract void removeState(Node node);
 	
 	public abstract boolean isVisitedState(Node node);
 	
 	public abstract boolean goalTest(Node node);
 	
-	public abstract int cost(Cell iron, boolean[] status);
+	public abstract int cost(Cell iron, byte[] status);
 	
 	public abstract ArrayList<Node> transition(Node node);
 	

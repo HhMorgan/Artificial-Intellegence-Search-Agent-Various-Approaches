@@ -2,7 +2,6 @@ package search;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 import java.util.Queue;
 
 import generic.Node;
@@ -11,10 +10,10 @@ import problemStatment.EndGame;
 public class SearchInvoker extends GenericSearch{
 	
 	public static Node BFS(EndGame problem) {
-		//int limit = 10;
+		//int limit = 30;
 		Queue<Node> nodes= new LinkedList<>(); 
 		nodes.add(problem.getInitialState());
-		problem.addState(problem.getInitialState());
+		problem.addState(problem.getInitialState().getState());
 		while (!nodes.isEmpty()) {
 //			if(limit <= 0)
 //				break;
@@ -32,27 +31,28 @@ public class SearchInvoker extends GenericSearch{
 //				}
 //			System.out.println();
 			
-			int successorStatesLength = successorStates.size();
-			for(int l = 0; l < successorStates.size(); l++) {
-				if (problem.isVisitedState(successorStates.get(l))) {
-					//System.out.println("REMOVED : "+successorStates.get(l));
-//					successorStates.remove(0);
-					successorStatesLength --;
+			//int successorStatesLength = successorStates.size();
+			while(!successorStates.isEmpty()) {
+			//for(int l = 0; l < successorStates.size(); l++) {
+				if (problem.isVisitedState(successorStates.get(0))) {
+					//System.out.println("REMOVED : "+successorStates.get(0));
+					successorStates.remove(0);
+					//successorStatesLength --;
 					continue;
 				} else {
 					//System.out.println(successorStates.get(0));
 					//System.out.println("ADDED : " + successorStates.get(0));
 					//System.out.println("ADDED : " + successorStates.get(l));
-					problem.addState(successorStates.get(l));
-					nodes.add(successorStates.get(l));
+					problem.addState(successorStates.get(0).getState());
+					nodes.add(successorStates.remove(0));
 					
 					//limit--;
 					//System.out.println(limit);
 				}
 			}
-			if(successorStatesLength == 0) {
-				problem.removeState(node);
-			}
+//			if(successorStatesLength == 0) {
+//				problem.removeState(node.getState());
+//			}
 		}
 		return null;
 	}

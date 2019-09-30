@@ -1,4 +1,4 @@
-package program;
+
 
 import java.util.Arrays;
 
@@ -8,17 +8,7 @@ import problemStatment.EndGame;
 import search.SearchInvoker;
 
 public class Main {
-
-	public static String printPath(Node node) {
-		String path = "";
-		Node prevNode = node;
-		while (prevNode != null) {
-			path += (prevNode.getOperator() + ";");
-			prevNode = prevNode.getParent();
-		}
-		return path;
-	}
-
+	
 	public static String solve(String grid, String strategy, boolean visualize) {
 		String[] parsedString = grid.split(";");
 		String[] sizeString = parsedString[0].split(",");
@@ -49,20 +39,26 @@ public class Main {
 			encoding[(i / 2) + 8] = new Cell(wx, wy);
 		}
 
-		boolean[] status = new boolean[encoding.length];
-		Arrays.fill(status, true);
-		Node initialState = new Node(iron, status,'s', 0, 0, null);
+		byte[] gridStatus = new byte[encoding.length + 2];
+		gridStatus[0] = iron.getX();
+		gridStatus[1] = iron.getY();
+		for(int i = 2; i <gridStatus.length; i++) {
+			gridStatus[i] = 1;
+		}
+		Node initialState = new Node(gridStatus,'s', 0, 0, null);
 		EndGame problem = new EndGame(initialState, encoding);
-		//EndGame.BFS(problem);
 		Node goal = SearchInvoker.BFS(problem);
-		//System.out.println("Goal : " + goal);
-		return goal.toString();
-		//return null;
+		
+		String result = (goal != null)? goal.toString() : "There is no solution.";
+		
+		return result;
 	}
 
 	public static void main(String[] args) {
 		
 		String grid = " 5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2,3,4,4,3";
+		//String grid = "10,10;7,7;5,9;0,2,3,7,5,4,8,6,8,9,9,1;0,3,4,5,8,3,9,7,9,3";
+		//String grid = "15,15;7,7;5,9;0,2,3,7,5,4,8,12,11,6,13,10;0,3,4,5,8,3,9,7,14,3";
 		//String grid = " 4,4;2,0;2,3;0,2,0,3,1,0,2,1,3,2,3,3;1,2";
 		System.out.println(solve(grid,"BFS",false));
 
