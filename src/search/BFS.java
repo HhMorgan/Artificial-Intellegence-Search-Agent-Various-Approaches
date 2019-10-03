@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import generic.Node;
 
+
 public class BFS extends GenericSearch{
 	
 		public BFS() {

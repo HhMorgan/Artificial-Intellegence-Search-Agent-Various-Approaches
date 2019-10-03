@@ -1,25 +1,27 @@
 package search;
 
+import java.util.PriorityQueue;
 import generic.Node;
 
 public class UCS extends GenericSearch{
-
+	
+	public UCS() {
+		super.queue = new PriorityQueue<Node>();
+	}
+	
 	@Override
 	public void add(Node node) {
-		// TODO Auto-generated method stub
-		
+		((PriorityQueue<Node>) queue).add(node);
 	}
 
 	@Override
 	public Node remove() {
-		// TODO Auto-generated method stub
-		return null;
+		return ((PriorityQueue<Node>) queue).poll();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return queue.isEmpty();
 	}
 
 }

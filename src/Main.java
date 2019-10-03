@@ -1,9 +1,11 @@
-import generic.Node;
+import Avengers.AvengersNode;
+import Avengers.EndGame;
 import generic.Cell;
-import problemStatment.EndGame;
 import search.BFS;
 import search.DFS;
+import search.IDS;
 import search.Search;
+import search.UCS;
 
 public class Main {
 	
@@ -43,15 +45,16 @@ public class Main {
 		for(int i = 2; i <gridStatus.length; i++) {
 			gridStatus[i] = 1;
 		}
-		Node initialState = new Node(gridStatus,'s', 0, 0, null);
+		AvengersNode initialState = new AvengersNode(gridStatus, 0,"start", 0, 0, null);
 		EndGame problem = new EndGame(initialState, encoding);
 		//search strategy determination.
-		Node goal = null;
+		AvengersNode goal = null;
 		switch(strategy) {
-			case "BFS" : goal = Search.search(problem, new BFS());break;
-			case "DFS" : goal = Search.search(problem, new DFS());break;
+			case "BFS" : goal = (AvengersNode) Search.search(problem, new BFS());break;
+			case "DFS" : goal = (AvengersNode) Search.search(problem, new DFS());break;
+			case "UCS" : goal = (AvengersNode) Search.search(problem, new UCS());break;
+			case "IDS" : goal = (AvengersNode) Search.search(problem, new IDS(problem));break;
 		}
-		
 		String result = (goal != null)? goal.toString() : "There is no solution.";
 		
 		return result;
@@ -62,9 +65,13 @@ public class Main {
 		String grid = " 5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2,3,4,4,3";
 		//String grid = "10,10;7,7;5,9;0,2,3,7,5,4,8,6,8,9,9,1;0,3,4,5,8,3,9,7,9,3";
 		//String grid = "15,15;7,7;5,9;0,2,3,7,5,4,8,12,11,6,13,10;0,3,4,5,8,3,9,7,14,3";
-		//String grid = "100,100;50,50;25,25;10,20,35,75,40,65,47,90,53,89,80,4;5,15,26,79,38,70,66,77,90,90";
+		//String grid = "100,100;50,50;25,25;10,20,35,75,40,65,47,90,53,89,80,4;5,15,26,79,38,70,66,77";
 		//String grid = " 4,4;2,0;2,3;0,2,0,3,1,0,2,1,3,2,3,3;1,2";
-		System.out.println(solve(grid,"BFS",false));
+		long startTime = System.currentTimeMillis();
+		System.out.println(solve(grid,"UCS",false));
+		long stopTime = System.currentTimeMillis();
+	    long elapsedTime = stopTime - startTime;
+	    System.out.println(elapsedTime + " Miliseconds");
 
 	}
 }

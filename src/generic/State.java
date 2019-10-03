@@ -1,4 +1,4 @@
 package generic;
 
-abstract public class State implements Comparable<State>{
+public abstract class State implements Comparable<State>{
 }

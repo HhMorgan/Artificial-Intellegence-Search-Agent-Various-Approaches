@@ -1,8 +1,8 @@
 package search;
 
 import java.util.Collection;
-
 import generic.Node;
+
 
 public abstract class GenericSearch {
 

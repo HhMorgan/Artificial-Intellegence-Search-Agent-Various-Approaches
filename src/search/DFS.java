@@ -1,7 +1,6 @@
 package search;
 
 import java.util.LinkedList;
-
 import generic.Node;
 
 public class DFS extends GenericSearch{
