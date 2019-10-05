@@ -42,8 +42,8 @@ public class Main {
 		byte[] gridStatus = new byte[encoding.length + 2];
 		gridStatus[0] = iron.getX();
 		gridStatus[1] = iron.getY();
-		for(int i = 2; i <gridStatus.length; i++) {
-			gridStatus[i] = 1;
+		for(int i = 2; i < gridStatus.length; i++) {
+			gridStatus[i] = Byte.valueOf((byte) (i - 2));
 		}
 		AvengersNode initialState = new AvengersNode(gridStatus, 0,"start", 0, 0, null);
 		EndGame problem = new EndGame(initialState, encoding);
@@ -55,20 +55,23 @@ public class Main {
 			case "UCS" : goal = (AvengersNode) Search.search(problem, new UCS());break;
 			case "IDS" : goal = (AvengersNode) Search.search(problem, new IDS(problem));break;
 		}
+		//System.out.println("Depth : " + goal.getDepth());
 		String result = (goal != null)? goal.toString() : "There is no solution.";
 		
 		return result;
 	}
 
 	public static void main(String[] args) {
-		
-		String grid = " 5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2,3,4,4,3";
+		//String grid = " 5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2";
+		//String grid = " 5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2,3,4,4,3";
+		//String grid = " 5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,4,4,3";
 		//String grid = "10,10;7,7;5,9;0,2,3,7,5,4,8,6,8,9,9,1;0,3,4,5,8,3,9,7,9,3";
-		//String grid = "15,15;7,7;5,9;0,2,3,7,5,4,8,12,11,6,13,10;0,3,4,5,8,3,9,7,14,3";
+		//String grid = "15,15;7,7;5,9;0,2,3,7,5,4,8,12,11,6,13,10;0,3,4,5,8,3";
+		String grid = "15,15;7,7;5,9;0,2,3,7,5,4,8,12,11,6,13,10;0,3,4,5,8,3,9,7,14,3";
 		//String grid = "100,100;50,50;25,25;10,20,35,75,40,65,47,90,53,89,80,4;5,15,26,79,38,70,66,77";
 		//String grid = " 4,4;2,0;2,3;0,2,0,3,1,0,2,1,3,2,3,3;1,2";
 		long startTime = System.currentTimeMillis();
-		System.out.println(solve(grid,"UCS",false));
+		System.out.println(solve(grid,"IDS",false));
 		long stopTime = System.currentTimeMillis();
 	    long elapsedTime = stopTime - startTime;
 	    System.out.println(elapsedTime + " Miliseconds");

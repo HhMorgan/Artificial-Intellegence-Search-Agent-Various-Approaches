@@ -20,6 +20,10 @@ public abstract class Operator {
 		return this.cost;
 	}
 	
+	public String toString() {
+		return this.getName();
+	}
+	
 	public abstract AvengersNode transition(Problem problem,AvengersNode node);
 	
 }
