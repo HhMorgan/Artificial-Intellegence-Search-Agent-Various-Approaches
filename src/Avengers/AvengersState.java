@@ -75,7 +75,6 @@ public class AvengersState extends State {
 	
 	@Override
     public int hashCode() {
-		//System.out.println(Arrays.toString(this.getStatus()));
         return Objects.hash(this.getIron().getX(),this.getIron().getY(), Arrays.hashCode(this.getStatus()));
     }
 	

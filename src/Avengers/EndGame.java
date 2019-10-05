@@ -49,14 +49,9 @@ public class EndGame extends Problem {
 
 	// IsVisitedState predicate checks if the state is repeated.
 	public boolean isVisitedState(Node node) {
-//		if (node.getOperator().equals("Snap")) {
-//			System.out.println((statespace.contains(node.getState())));
-//		}
-		//if (!node.getOperator().equals("Snap")) {
 			if (statespace.contains(node.getState())) {
 				return true;
 			}
-		//}
 		return false;
 	}
 
@@ -76,12 +71,8 @@ public class EndGame extends Problem {
 
 	// The GoalTest predicate checks if the state is a goal state of not.
 	public boolean goalTest(Node node) {
-		//System.out.println(node);
 		if (this.isCollectedStones((AvengersNode) node)) {
-			// System.out.println(((AvengersNode) node).getDmg());
-			
-			if (node.getOperator().equals("Snap")) {
-				//System.out.println("SNAP");
+			if (node.getOperator().equals("Snap") && ((AvengersNode) node).getDmg() < 100) {
 				return true;
 			}
 		}
@@ -122,11 +113,10 @@ public class EndGame extends Problem {
 		byte[] status = ((AvengersState) node.getState()).getStatus();
 		ArrayList<Operator> operators = new ArrayList<Operator>();
 		if (((iron.getX() == getCoordinates()[1].getX()) && (iron.getY() == getCoordinates()[1].getY()))) {
-			if (this.isCollectedStones(node)) {
+			if (this.isCollectedStones(node) && (!node.getOperator().equals("Snap"))) {
 				operators.add(new Snap());
 			}
 		}
-
 		else {
 			int statusIndex = 2;
 			while (statusIndex < status.length && status[statusIndex] < 8) {
@@ -144,7 +134,6 @@ public class EndGame extends Problem {
 			// Allowed moves in a state.
 			if (!isCollect) {
 				// checks the four adjacent cells.
-				
 				int warriorsLength = 0;
 				boolean isWarriors = false;
 				int[] warriorLocations = new int[4];
@@ -201,15 +190,11 @@ public class EndGame extends Problem {
 	public ArrayList<Node> expand(Node node) {
 		ArrayList<Node> successorStates = new ArrayList<Node>();
 		ArrayList<Operator> operators = availableActions(node);
-		// System.out.println(((AvengersState) ((AvengersNode)
-		// node).getState()).getIron() + ".");
 		for (Operator o : operators) {
-			// System.out.print(o + ", ");
 			AvengersNode successorState = o.transition(this, (AvengersNode) node);
 			if (successorState != null)
 				successorStates.add(successorState);
 		}
-		// System.out.println();
 		return successorStates;
 	}
 
