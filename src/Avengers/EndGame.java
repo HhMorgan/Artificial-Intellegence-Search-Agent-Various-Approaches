@@ -66,7 +66,7 @@ public class EndGame extends Problem {
 	// The GoalTest predicate checks if the state is a goal state of not.
 	public boolean goalTest(Node node) {
 		if (this.isCollectedStones((AvengersNode) node)) {
-			if (node.getOperator().equals("Snap") && ((AvengersNode) node).getDmg() < 100) {
+			if (node.getOperator().equals("Snap") && ((AvengersNode) node).getPathCost() < 100) {
 				return true;
 			}
 		}
@@ -83,7 +83,7 @@ public class EndGame extends Problem {
 		for (int i = 0; i < 4; i++) {
 			if (iron.getX() + movementX[i] >= 0 && iron.getX() + movementX[i] < gridBorders.getX()
 					&& iron.getY() + movementY[i] > 0 && iron.getY() + movementY[i] < gridBorders.getY()) {
-				for (int j = 2; j < status.length; j++) {
+				for (int j = 8; j < status.length; j++) {
 					if (((iron.getX() + movementX[i] == this.coordinates[status[j]].getX())
 							&& (iron.getY() + movementY[i] == this.coordinates[status[j]].getY()))) {
 						dmg += 1;

@@ -10,7 +10,7 @@ public class Collect extends Operator {
 	int collected;
 
 	public Collect(int collected) {
-		super("Collect", 0);
+		super("Collect", 3);
 		this.collected = collected + 2;
 
 	}
@@ -26,8 +26,10 @@ public class Collect extends Operator {
 			SuccessorGridStatus[successorGridStatusIndex] = ((AvengersState) node.getState()).getGridStatus()[k];
 			successorGridStatusIndex++;
 		}
-		AvengersNode successorState = new AvengersNode(SuccessorGridStatus, node.getDmg(), this.getName(),
-				node.getCost() + this.getCost(), node.getDepth() + 1, node);
+		int inflected = this.getCost();
+		int costSuccessor = node.getPathCost() + inflected;
+		AvengersNode successorState = new AvengersNode(SuccessorGridStatus, this.getName(),
+				costSuccessor, node.getDepth() + 1, node);
 		return successorState;
 	}
 }

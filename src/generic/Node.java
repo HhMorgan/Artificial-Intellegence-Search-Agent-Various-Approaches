@@ -34,13 +34,13 @@ public class Node implements Comparable<Node> {
 		return this.operator;
 	}
 
-	public int getCost() {
+	public int getPathCost() {
 		return this.cost;
 	}
 
 	@Override
 	public int compareTo(Node arg0) {
-		return Integer.compare(this.getCost(), arg0.getCost());
+		return Integer.compare(this.getPathCost(), arg0.getPathCost());
 	}
 
 }

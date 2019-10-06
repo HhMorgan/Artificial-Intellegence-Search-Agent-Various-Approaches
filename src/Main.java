@@ -45,7 +45,7 @@ public class Main {
 		for(int i = 2; i < gridStatus.length; i++) {
 			gridStatus[i] = Byte.valueOf((byte) (i - 2));
 		}
-		AvengersNode initialState = new AvengersNode(gridStatus, 0,"start", 0, 0, null);
+		AvengersNode initialState = new AvengersNode(gridStatus, "start", 0, 0, null);
 		EndGame problem = new EndGame(initialState, encoding);
 		//search strategy determination.
 		AvengersNode goal = null;
@@ -55,7 +55,7 @@ public class Main {
 			case "UCS" : goal = (AvengersNode) Search.search(problem, new UCS());break;
 			case "IDS" : goal = (AvengersNode) Search.search(problem, new IDS(problem));break;
 		}
-		String result = (goal != null)? goal.toString() : "There is no solution.";
+		String result = (goal != null)? goal.toString() + ";" + goal.getPathCost() : "There is no solution.";
 		
 		return result;
 	}

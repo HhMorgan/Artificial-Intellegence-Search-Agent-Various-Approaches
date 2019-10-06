@@ -22,8 +22,10 @@ public class Snap extends Operator {
 				successorGridStatusIndex++;
 			} 
 		}
-		AvengersNode successorState = new AvengersNode(SuccessorGridStatus, node.getDmg(),
-				this.getName(), node.getCost() + this.getCost(), node.getDepth() + 1, node);
+		int inflicted = 0;
+		int costSuccessor = node.getPathCost() + inflicted;
+		AvengersNode successorState = new AvengersNode(SuccessorGridStatus,
+				this.getName(), costSuccessor + this.getCost(), node.getDepth() + 1, node);
 		return successorState;
 
 	}
