@@ -33,8 +33,7 @@ public class Kill extends GeneralLookUpInspection {
 			}
 			
 		}
-		int inflicted = problem.pathCost(((AvengersState) node.getState()).getIron(),
-				((AvengersState) node.getState()).getStatus()) + this.getCost();
+		int inflicted = problem.pathCost(node) + this.getCost();
 		int dmgSuccessor = node.getDmg() + inflicted;
 		int costSuccessor = node.getCost() + this.getCost();
 		AvengersNode successorState = new AvengersNode(SuccessorGridStatus, dmgSuccessor, this.getName(), costSuccessor,

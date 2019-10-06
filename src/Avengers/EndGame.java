@@ -16,22 +16,16 @@ public class EndGame extends Problem {
 	// movement where the start is the up direction.
 	static final byte[] movementX = { -1, 0, 1, 0 };
 	static final byte[] movementY = { 0, 1, 0, -1 };
-	private AvengersNode initialState;
 	private Cell[] coordinates;
-	private HashSet<AvengersState> statespace;
 
 	public EndGame(AvengersNode initialState, Cell[] coordinates) {
 		this.initialState = initialState;
 		this.coordinates = coordinates;
-		this.statespace = new HashSet<AvengersState>();
+		this.statespace = new HashSet<State>();
 	}
 
 	public Cell[] getCoordinates() {
 		return coordinates;
-	}
-
-	public AvengersNode getInitialState() {
-		return this.initialState;
 	}
 
 	// The AddState function adds a give state to the state space of the problem.
@@ -44,7 +38,7 @@ public class EndGame extends Problem {
 	}
 
 	public void emptyStateSpace() {
-		this.statespace = new HashSet<AvengersState>();
+		this.statespace = new HashSet<State>();
 	}
 
 	// IsVisitedState predicate checks if the state is repeated.
@@ -81,7 +75,9 @@ public class EndGame extends Problem {
 
 	// The Cost function computes the damage units inflicted to Iron Man at a given
 	// state.
-	public int pathCost(Cell iron, byte[] status) {
+	public int pathCost(Node node) {
+		Cell iron = ((AvengersState)((AvengersNode) node).getState()).getIron();
+		byte[] status = ((AvengersState)((AvengersNode) node).getState()).getStatus();
 		Cell gridBorders = this.coordinates[0];
 		int dmg = 0;
 		for (int i = 0; i < 4; i++) {

@@ -1,19 +1,25 @@
 package generic;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 
 public abstract class Problem {
 	
-	private Node initialState;
-	private ArrayList<State> statespace;
+	protected Node initialState;
+	protected HashSet<State> statespace;
+	protected Operator[] operators;
 	
 	public Node getInitialState() {
-		return initialState;
+		return this.initialState;
 	}
 	
-	public ArrayList<State> getStatespace() {
-		return statespace;
+	public HashSet<State> getStatespace() {
+		return this.statespace;
+	}
+	
+	public Operator[] getOperators() {
+		return this.operators;
 	}
 	
 	public abstract void addState(State state);
@@ -26,7 +32,7 @@ public abstract class Problem {
 	
 	public abstract boolean goalTest(Node node);
 	
-	public abstract int pathCost(Cell iron, byte[] status);
+	public abstract int pathCost(Node node);
 	
 	public abstract ArrayList<Node> expand(Node node);
 	

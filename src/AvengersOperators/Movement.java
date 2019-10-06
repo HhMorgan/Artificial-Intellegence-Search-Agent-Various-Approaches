@@ -29,7 +29,7 @@ public class Movement extends GeneralLookUpInspection {
 		for (int j = 2; j < ((AvengersState) node.getState()).getGridStatus().length; j++) {
 			SuccessorGridStatus[j] = ((AvengersState) node.getState()).getGridStatus()[j];
 		}
-		int inflected = problem.pathCost(SuccessorIron, ((AvengersState) node.getState()).getStatus());
+		int inflected = problem.pathCost(node);
 		int dmgSuccessor = node.getDmg() + inflected;
 		int costSuccessor = node.getCost() + inflected + this.getCost();
 		AvengersNode successorState = new AvengersNode(SuccessorGridStatus, dmgSuccessor, movement[direction],
