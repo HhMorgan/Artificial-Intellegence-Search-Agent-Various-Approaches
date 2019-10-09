@@ -113,7 +113,7 @@ public class EndGame extends Problem {
 				operators.add(new Snap());
 			}
 		}
-		else {
+		//else {
 			int statusIndex = 2;
 			while (statusIndex < status.length && status[statusIndex] < 8) {
 				byte index = status[statusIndex];
@@ -128,7 +128,7 @@ public class EndGame extends Problem {
 			}
 			int prevStatusIndex = statusIndex;
 			// Allowed moves in a state.
-			if (!isCollect) {
+			//if (!isCollect) {
 				// checks the four adjacent cells.
 				int warriorsLength = 0;
 				boolean isWarriors = false;
@@ -176,8 +176,8 @@ public class EndGame extends Problem {
 				}
 				
 				
-			}
-		}
+			//}
+		//}
 		return operators;
 	}
 
