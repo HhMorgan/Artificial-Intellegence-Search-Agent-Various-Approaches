@@ -1,5 +1,6 @@
 package search;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import generic.Node;
@@ -14,6 +15,13 @@ public class BFS extends GenericSearch{
 		@Override
 		public void add(Node node) {
 			((LinkedList<Node>) super.queue).add(node);
+		}
+		
+		@Override
+		public void add(ArrayList<Node>  nodes) {
+			for(Node n:nodes) {
+				((LinkedList<Node>) super.queue).add(n);
+			}
 		}
 
 		@Override

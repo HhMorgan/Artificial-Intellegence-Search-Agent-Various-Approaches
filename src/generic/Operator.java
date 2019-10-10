@@ -24,6 +24,6 @@ public abstract class Operator {
 		return this.getName();
 	}
 	
-	public abstract AvengersNode transition(Problem problem,AvengersNode node);
+	public abstract Node transition(Problem problem,Node node);
 	
 }

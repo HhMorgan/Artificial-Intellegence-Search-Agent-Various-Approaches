@@ -2,6 +2,7 @@ package AvengersOperators;
 
 import Avengers.AvengersNode;
 import Avengers.AvengersState;
+import generic.Node;
 import generic.Operator;
 import generic.Problem;
 
@@ -12,7 +13,7 @@ public class Snap extends Operator {
 	}
 
 	@Override
-	public AvengersNode transition(Problem problem, AvengersNode node) {
+	public AvengersNode transition(Problem problem, Node node) {
 		int successorGridStatusIndex = 0;
 		byte[] SuccessorGridStatus = new byte[((AvengersState) node.getState()).getGridStatus().length - 1];
 		for (int k = 0; k < ((AvengersState) node.getState()).getGridStatus().length; k++) {

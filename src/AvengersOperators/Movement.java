@@ -4,6 +4,7 @@ import Avengers.AvengersNode;
 import Avengers.AvengersState;
 import Avengers.EndGame;
 import generic.Cell;
+import generic.Node;
 import generic.Problem;
 
 public class Movement extends GeneralLookUpInspection {
@@ -19,7 +20,7 @@ public class Movement extends GeneralLookUpInspection {
 	}
 
 	@Override
-	public AvengersNode transition(Problem problem, AvengersNode node) {
+	public AvengersNode transition(Problem problem, Node node) {
 		Cell iron = ((AvengersState) node.getState()).getIron();
 		Cell SuccessorIron = new Cell(Byte.valueOf((byte) (iron.getX() + movementX[direction])),
 				Byte.valueOf((byte) (iron.getY() + movementY[direction])));

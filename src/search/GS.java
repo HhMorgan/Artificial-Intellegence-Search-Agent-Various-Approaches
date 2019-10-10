@@ -1,11 +1,13 @@
 package search;
 
+import java.util.ArrayList;
+
 import generic.Node;
 
 public class GS extends GenericSearch{
 
 	@Override
-	public void add(Node node) {
+	public void add(ArrayList<Node>  nodes) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -20,6 +22,12 @@ public class GS extends GenericSearch{
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void add(Node node) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

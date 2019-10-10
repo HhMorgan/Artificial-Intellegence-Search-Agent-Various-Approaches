@@ -5,7 +5,7 @@ import generic.Node;
 //A node is the state of the world at a given time step.
 public class AvengersNode extends Node{
 	
-	public AvengersNode(byte[] gridStatus, String operator, int cost,int depth, AvengersNode parent) {
+	public AvengersNode(byte[] gridStatus, String operator, int cost,int depth, Node parent) {
 		super(operator, cost, depth, parent);
 		super.state = new AvengersState(gridStatus);
 	}

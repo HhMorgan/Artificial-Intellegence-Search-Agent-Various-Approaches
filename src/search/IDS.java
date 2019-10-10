@@ -1,5 +1,6 @@
 package search;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import generic.Node;
@@ -14,11 +15,18 @@ public class IDS extends GenericSearch {
 		this.problem = problem;
 		super.queue = new LinkedList<Node>();
 	}
-
+	
 	@Override
 	public void add(Node node) {
-		if (depth >= (node.getDepth())) {
-			((LinkedList<Node>) super.queue).push(node);
+		((LinkedList<Node>) super.queue).push(node);
+	}
+	
+	@Override
+	public void add(ArrayList<Node> nodes) {
+		for (int i = nodes.size() - 1; i >= 0; i--) {
+			if (depth >= (nodes.get(i).getDepth())) {
+				((LinkedList<Node>) super.queue).push(nodes.get(i));
+			}
 		}
 	}
 
@@ -32,7 +40,7 @@ public class IDS extends GenericSearch {
 		if (((LinkedList<Node>) queue).isEmpty()) {
 			depth++;
 			if (depth <= Integer.MAX_VALUE) {
-				//System.out.println(depth);
+				// System.out.println(depth);
 				super.queue = new LinkedList<Node>();
 				this.problem.emptyStateSpace();
 				add(this.problem.getInitialState());

@@ -3,6 +3,7 @@ package AvengersOperators;
 import Avengers.AvengersNode;
 import Avengers.AvengersState;
 import generic.Operator;
+import generic.Node;
 import generic.Problem;
 
 public class Collect extends Operator {
@@ -16,7 +17,7 @@ public class Collect extends Operator {
 	}
 
 	@Override
-	public AvengersNode transition(Problem problem, AvengersNode node) {
+	public Node transition(Problem problem, Node node) {
 		int successorGridStatusIndex = 0;
 		byte[] SuccessorGridStatus = new byte[((AvengersState) node.getState()).getGridStatus().length - 1];
 		for (int k = 0; k < ((AvengersState) node.getState()).getGridStatus().length; k++) {

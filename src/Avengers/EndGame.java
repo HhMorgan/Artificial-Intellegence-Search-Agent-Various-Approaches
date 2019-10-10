@@ -22,6 +22,7 @@ public class EndGame extends Problem {
 		this.initialState = initialState;
 		this.coordinates = coordinates;
 		this.statespace = new HashSet<State>();
+		this.statespace.add(initialState.getState());
 	}
 
 	public Cell[] getCoordinates() {
@@ -39,6 +40,7 @@ public class EndGame extends Problem {
 
 	public void emptyStateSpace() {
 		this.statespace = new HashSet<State>();
+		this.statespace.add(initialState.getState());
 	}
 
 	// IsVisitedState predicate checks if the state is repeated.
@@ -187,9 +189,10 @@ public class EndGame extends Problem {
 		ArrayList<Node> successorStates = new ArrayList<Node>();
 		ArrayList<Operator> operators = availableActions(node);
 		for (Operator o : operators) {
-			AvengersNode successorState = o.transition(this, (AvengersNode) node);
-			if (successorState != null)
+			Node successorState = o.transition(this, node);
+			if (successorState != null && !isVisitedState(successorState))
 				successorStates.add(successorState);
+				addState(successorState.getState());
 		}
 		return successorStates;
 	}
