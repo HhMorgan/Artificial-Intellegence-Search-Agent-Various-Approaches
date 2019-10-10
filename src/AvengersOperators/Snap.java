@@ -14,8 +14,8 @@ public class Snap extends Operator {
 	@Override
 	public Node transition(Problem problem, Node node) {
 		int successorGridStatusIndex = 0;
-		byte[] SuccessorGridStatus = new byte[((AvengersState) node.getState()).getGridStatus().length - 1];
-		for (int k = 0; k < ((AvengersState) node.getState()).getGridStatus().length; k++) {
+		byte[] SuccessorGridStatus = new byte[((AvengersState) node.getState()).getGrid().length - 1];
+		for (int k = 0; k < ((AvengersState) node.getState()).getGrid().length; k++) {
 			if (k == 2) {
 				if (node.getPathCost() < 100) {
 					SuccessorGridStatus[successorGridStatusIndex] = Byte.valueOf((byte) node.getPathCost());
@@ -26,7 +26,7 @@ public class Snap extends Operator {
 				continue;
 			}
 			if (k != 2 && k != 3) {
-				SuccessorGridStatus[successorGridStatusIndex] = ((AvengersState) node.getState()).getGridStatus()[k];
+				SuccessorGridStatus[successorGridStatusIndex] = ((AvengersState) node.getState()).getGrid()[k];
 				successorGridStatusIndex++;
 			}
 		}

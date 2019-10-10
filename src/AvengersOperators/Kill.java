@@ -21,13 +21,13 @@ public class Kill extends GeneralLookUpInspection {
 		int currentIndex =  this.warriorLocations.length - this.warriorLength;
 		int successorGridStatusIndex = 0;
 		Arrays.sort(this.warriorLocations);
-		byte[] SuccessorGridStatus = new byte[((AvengersState) node.getState()).getGridStatus().length - this.warriorLength];
-		for (int k = 0; k < ((AvengersState) node.getState()).getGridStatus().length; k++) {
-			if (currentIndex < this.warriorLocations.length  && this.warriorLocations[currentIndex] == ((AvengersState) node.getState()).getGridStatus()[k]) {
+		byte[] SuccessorGridStatus = new byte[((AvengersState) node.getState()).getGrid().length - this.warriorLength];
+		for (int k = 0; k < ((AvengersState) node.getState()).getGrid().length; k++) {
+			if (currentIndex < this.warriorLocations.length  && this.warriorLocations[currentIndex] == ((AvengersState) node.getState()).getGrid()[k]) {
 				currentIndex++;
 			}
 			else {
-				SuccessorGridStatus[successorGridStatusIndex] = ((AvengersState) node.getState()).getGridStatus()[k];
+				SuccessorGridStatus[successorGridStatusIndex] = ((AvengersState) node.getState()).getGrid()[k];
 				successorGridStatusIndex ++;
 			}
 			

@@ -18,12 +18,12 @@ public class Collect extends Operator {
 	@Override
 	public Node transition(Problem problem, Node node) {
 		int successorGridStatusIndex = 0;
-		byte[] SuccessorGridStatus = new byte[((AvengersState) node.getState()).getGridStatus().length - 1];
-		for (int k = 0; k < ((AvengersState) node.getState()).getGridStatus().length; k++) {
+		byte[] SuccessorGridStatus = new byte[((AvengersState) node.getState()).getGrid().length - 1];
+		for (int k = 0; k < ((AvengersState) node.getState()).getGrid().length; k++) {
 			if (k == this.collected) {
 				continue;
 			}
-			SuccessorGridStatus[successorGridStatusIndex] = ((AvengersState) node.getState()).getGridStatus()[k];
+			SuccessorGridStatus[successorGridStatusIndex] = ((AvengersState) node.getState()).getGrid()[k];
 			successorGridStatusIndex++;
 		}
 		int inflected = this.getCost();

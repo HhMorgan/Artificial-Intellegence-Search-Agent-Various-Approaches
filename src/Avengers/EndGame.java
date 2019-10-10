@@ -105,7 +105,7 @@ public class EndGame extends Problem {
 	}
 
 	public ArrayList<Operator> availableActions(Node node) {
-		boolean isCollect = false;
+//		boolean isCollect = false;
 		Cell gridBorders = getCoordinates()[0];
 		Cell iron = ((AvengersState) node.getState()).getIron();
 		byte[] status = ((AvengersState) node.getState()).getStatus();
@@ -122,7 +122,7 @@ public class EndGame extends Problem {
 				Cell inspected = getCoordinates()[index];
 				// Collect a stone in the cell.
 				if (((iron.getX() == inspected.getX()) && (iron.getY() == inspected.getY()))) {
-					isCollect = true;
+//					isCollect = true;
 					operators.add(new Collect(statusIndex));
 					break;
 				}

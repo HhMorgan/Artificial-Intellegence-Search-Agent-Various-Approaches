@@ -23,11 +23,11 @@ public class Movement extends GeneralLookUpInspection {
 		Cell iron = ((AvengersState) node.getState()).getIron();
 		Cell SuccessorIron = new Cell(Byte.valueOf((byte) (iron.getX() + movementX[direction])),
 				Byte.valueOf((byte) (iron.getY() + movementY[direction])));
-		byte[] SuccessorGridStatus = new byte[((AvengersState) node.getState()).getGridStatus().length];
+		byte[] SuccessorGridStatus = new byte[((AvengersState) node.getState()).getGrid().length];
 		SuccessorGridStatus[0] = SuccessorIron.getX();
 		SuccessorGridStatus[1] = SuccessorIron.getY();
-		for (int j = 2; j < ((AvengersState) node.getState()).getGridStatus().length; j++) {
-			SuccessorGridStatus[j] = ((AvengersState) node.getState()).getGridStatus()[j];
+		for (int j = 2; j < ((AvengersState) node.getState()).getGrid().length; j++) {
+			SuccessorGridStatus[j] = ((AvengersState) node.getState()).getGrid()[j];
 		}
 		int inflicted = problem.pathCost(node) + this.getCost();
 		int costSuccessor = node.getPathCost() + inflicted;

@@ -7,29 +7,29 @@ import generic.Cell;
 import generic.State;
 
 public class AvengersState extends State {
-	byte [] gridStatus;
+	byte [] grid;
 	
 	public AvengersState(byte [] gridStatus) {
-		this.gridStatus = gridStatus;
+		this.grid = gridStatus;
 	}
 	
-	public byte[] getGridStatus() {
-		return this.gridStatus;
+	public byte[] getGrid() {
+		return this.grid;
 	}
 	
 	public Cell getIron() {
-		return new Cell(this.gridStatus[0], this.gridStatus[1]);
+		return new Cell(this.grid[0], this.grid[1]);
 	}
 	
 	public byte[] getStatus() {
-		return Arrays.copyOfRange(this.gridStatus, 2, this.gridStatus.length);
+		return Arrays.copyOfRange(this.grid, 2, this.grid.length);
 	}
 
 	@Override
 	public int compareTo(State otherState) {
 		AvengersState otherAvengerState = (AvengersState) otherState;
-		int count = this.getGridStatus().length;
-		int otherCount = otherAvengerState.getGridStatus().length;
+		int count = this.getGrid().length;
+		int otherCount = otherAvengerState.getGrid().length;
 		Cell iron = this.getIron();
 		Cell otherIron = otherAvengerState.getIron();
 		byte[] status = getStatus();
