@@ -1,7 +1,5 @@
 package generic;
 
-import Avengers.AvengersNode;
-
 public abstract class Operator {
 
 	private String name;

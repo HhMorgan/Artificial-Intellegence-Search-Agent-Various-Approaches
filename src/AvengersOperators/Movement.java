@@ -1,6 +1,5 @@
 package AvengersOperators;
 
-import Avengers.AvengersNode;
 import Avengers.AvengersState;
 import Avengers.EndGame;
 import generic.Cell;
@@ -20,7 +19,7 @@ public class Movement extends GeneralLookUpInspection {
 	}
 
 	@Override
-	public AvengersNode transition(Problem problem, Node node) {
+	public Node transition(Problem problem, Node node) {
 		Cell iron = ((AvengersState) node.getState()).getIron();
 		Cell SuccessorIron = new Cell(Byte.valueOf((byte) (iron.getX() + movementX[direction])),
 				Byte.valueOf((byte) (iron.getY() + movementY[direction])));
@@ -32,7 +31,7 @@ public class Movement extends GeneralLookUpInspection {
 		}
 		int inflicted = problem.pathCost(node) + this.getCost();
 		int costSuccessor = node.getPathCost() + inflicted;
-		AvengersNode successorState = new AvengersNode(SuccessorGridStatus, movement[direction],
+		Node successorState = new Node(new AvengersState(SuccessorGridStatus), movement[direction],
 				costSuccessor, node.getDepth() + 1, node);
 		return successorState;
 	}

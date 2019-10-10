@@ -1,8 +1,6 @@
 package AvengersOperators;
 
 import java.util.Arrays;
-
-import Avengers.AvengersNode;
 import Avengers.AvengersState;
 import generic.Node;
 import generic.Problem;
@@ -19,7 +17,7 @@ public class Kill extends GeneralLookUpInspection {
 	}
 
 	@Override
-	public AvengersNode transition(Problem problem, Node node) {
+	public Node transition(Problem problem, Node node) {
 		int currentIndex =  this.warriorLocations.length - this.warriorLength;
 		int successorGridStatusIndex = 0;
 		Arrays.sort(this.warriorLocations);
@@ -36,7 +34,7 @@ public class Kill extends GeneralLookUpInspection {
 		}
 		int inflicted = problem.pathCost(node) + this.getCost();
 		int costSuccessor = node.getPathCost() + inflicted;
-		AvengersNode successorState = new AvengersNode(SuccessorGridStatus, this.getName(), costSuccessor,
+		Node successorState = new Node(new AvengersState(SuccessorGridStatus), this.getName(), costSuccessor,
 				node.getDepth() + 1, node);
 		return successorState;
 	}

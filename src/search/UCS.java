@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 import generic.Node;
 
-public class UCS extends GenericSearch {
+public class UCS extends QueuingFunction {
 
 	public UCS() {
 		super.queue = new PriorityQueue<Node>();

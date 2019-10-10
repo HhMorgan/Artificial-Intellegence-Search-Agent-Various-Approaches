@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import generic.Node;
 
-public class AS extends GenericSearch{
+public class AS extends QueuingFunction{
 
 	@Override
 	public void add(ArrayList<Node>  node) {

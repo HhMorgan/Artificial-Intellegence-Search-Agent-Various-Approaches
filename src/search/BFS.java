@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import generic.Node;
 
 
-public class BFS extends GenericSearch{
+public class BFS extends QueuingFunction{
 	
 		public BFS() {
 			super.queue = new LinkedList<Node>();

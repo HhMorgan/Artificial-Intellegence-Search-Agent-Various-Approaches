@@ -18,7 +18,7 @@ public class EndGame extends Problem {
 	static final byte[] movementY = { 0, 1, 0, -1 };
 	private Cell[] coordinates;
 
-	public EndGame(AvengersNode initialState, Cell[] coordinates) {
+	public EndGame(Node initialState, Cell[] coordinates) {
 		this.initialState = initialState;
 		this.coordinates = coordinates;
 		this.statespace = new HashSet<State>();
@@ -67,8 +67,8 @@ public class EndGame extends Problem {
 
 	// The GoalTest predicate checks if the state is a goal state of not.
 	public boolean goalTest(Node node) {
-		if (this.isCollectedStones((AvengersNode) node)) {
-			if (node.getOperator().equals("Snap") && ((AvengersNode) node).getPathCost() < 100) {
+		if (this.isCollectedStones(node)) {
+			if (node.getOperator().equals("Snap") && node.getPathCost() < 100) {
 				return true;
 			}
 		}
@@ -78,8 +78,8 @@ public class EndGame extends Problem {
 	// The Cost function computes the damage units inflicted to Iron Man at a given
 	// state.
 	public int pathCost(Node node) {
-		Cell iron = ((AvengersState)((AvengersNode) node).getState()).getIron();
-		byte[] status = ((AvengersState)((AvengersNode) node).getState()).getStatus();
+		Cell iron = ((AvengersState) node.getState()).getIron();
+		byte[] status = ((AvengersState) node.getState()).getStatus();
 		Cell gridBorders = this.coordinates[0];
 		int dmg = 0;
 		for (int i = 0; i < 4; i++) {

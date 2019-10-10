@@ -7,7 +7,7 @@ import generic.Problem;
 
 public class Search {
 
-	public static Node search(Problem problem, GenericSearch nodes) {
+	public static Node search(Problem problem, QueuingFunction nodes) {
 		nodes.add(problem.getInitialState());
 		problem.addState(problem.getInitialState().getState());
 		while (!nodes.isEmpty()) {

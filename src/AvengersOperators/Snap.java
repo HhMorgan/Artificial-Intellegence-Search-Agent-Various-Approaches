@@ -1,6 +1,5 @@
 package AvengersOperators;
 
-import Avengers.AvengersNode;
 import Avengers.AvengersState;
 import generic.Node;
 import generic.Operator;
@@ -13,7 +12,7 @@ public class Snap extends Operator {
 	}
 
 	@Override
-	public AvengersNode transition(Problem problem, Node node) {
+	public Node transition(Problem problem, Node node) {
 		int successorGridStatusIndex = 0;
 		byte[] SuccessorGridStatus = new byte[((AvengersState) node.getState()).getGridStatus().length - 1];
 		for (int k = 0; k < ((AvengersState) node.getState()).getGridStatus().length; k++) {
@@ -33,7 +32,7 @@ public class Snap extends Operator {
 		}
 		int inflicted = 0;
 		int costSuccessor = node.getPathCost() + inflicted;
-		AvengersNode successorState = new AvengersNode(SuccessorGridStatus, this.getName(),
+		Node successorState = new Node(new AvengersState(SuccessorGridStatus), this.getName(),
 				costSuccessor + this.getCost(), node.getDepth() + 1, node);
 		return successorState;
 

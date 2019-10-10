@@ -1,6 +1,8 @@
-import Avengers.AvengersNode;
+
+import Avengers.AvengersState;
 import Avengers.EndGame;
 import generic.Cell;
+import generic.Node;
 import search.BFS;
 import search.DFS;
 import search.IDS;
@@ -45,15 +47,15 @@ public class Main {
 		for(int i = 2; i < gridStatus.length; i++) {
 			gridStatus[i] = Byte.valueOf((byte) (i - 2));
 		}
-		AvengersNode initialState = new AvengersNode(gridStatus, "start", 0, 0, null);
+		Node initialState = new Node(new AvengersState(gridStatus), "start", 0, 0, null);
 		EndGame problem = new EndGame(initialState, encoding);
 		//search strategy determination.
-		AvengersNode goal = null;
+		Node goal = null;
 		switch(strategy) {
-			case "BFS" : goal = (AvengersNode) Search.search(problem, new BFS());break;
-			case "DFS" : goal = (AvengersNode) Search.search(problem, new DFS());break;
-			case "UCS" : goal = (AvengersNode) Search.search(problem, new UCS());break;
-			case "IDS" : goal = (AvengersNode) Search.search(problem, new IDS(problem));break;
+			case "BFS" : goal = (Node) Search.search(problem, new BFS());break;
+			case "DFS" : goal = (Node) Search.search(problem, new DFS());break;
+			case "UCS" : goal = (Node) Search.search(problem, new UCS());break;
+			case "IDS" : goal = (Node) Search.search(problem, new IDS(problem));break;
 		}
 		String result = (goal != null)? goal.toString() + ";" + goal.getPathCost() : "There is no solution.";
 		

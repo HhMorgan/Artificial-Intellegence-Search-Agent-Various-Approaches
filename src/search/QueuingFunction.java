@@ -5,7 +5,7 @@ import java.util.Collection;
 import generic.Node;
 
 
-public abstract class GenericSearch {
+public abstract class QueuingFunction {
 
 	Collection<Node> queue;
 

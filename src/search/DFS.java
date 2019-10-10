@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import generic.Node;
 
-public class DFS extends GenericSearch {
+public class DFS extends QueuingFunction {
 
 	public DFS() {
 		super.queue = new LinkedList<Node>();

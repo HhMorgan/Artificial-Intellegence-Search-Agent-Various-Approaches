@@ -11,7 +11,8 @@ public class Node implements Comparable<Node> {
 	private String operator;
 	private int cost;
 
-	public Node(String operator, int cost, int depth, Node parent) {
+	public Node(State state, String operator, int cost, int depth, Node parent) {
+		this.state = state;
 		this.operator = operator;
 		this.cost = cost;
 		this.depth = depth;
@@ -43,4 +44,7 @@ public class Node implements Comparable<Node> {
 		return Integer.compare(this.getPathCost(), arg0.getPathCost());
 	}
 
+	public String toString() {
+		return String.valueOf(this.getOperator()) + "/" + this.getState() + "?" + this.getParent();
+	}
 }

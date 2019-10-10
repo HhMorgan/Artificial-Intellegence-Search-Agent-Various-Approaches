@@ -1,6 +1,5 @@
 package AvengersOperators;
 
-import Avengers.AvengersNode;
 import Avengers.AvengersState;
 import generic.Operator;
 import generic.Node;
@@ -29,8 +28,8 @@ public class Collect extends Operator {
 		}
 		int inflected = this.getCost();
 		int costSuccessor = node.getPathCost() + inflected;
-		AvengersNode successorState = new AvengersNode(SuccessorGridStatus, this.getName(),
-				costSuccessor, node.getDepth() + 1, node);
+		Node successorState = new Node(new AvengersState(SuccessorGridStatus), this.getName(), costSuccessor,
+				node.getDepth() + 1, node);
 		return successorState;
 	}
 }

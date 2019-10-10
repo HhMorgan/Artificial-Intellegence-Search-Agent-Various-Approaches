@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import generic.Node;
 import generic.Problem;
 
-public class IDS extends GenericSearch {
+public class IDS extends QueuingFunction {
 
 	Problem problem;
 	int depth = 0;

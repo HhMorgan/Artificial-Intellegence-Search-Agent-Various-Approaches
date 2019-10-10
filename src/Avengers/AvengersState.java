@@ -78,7 +78,9 @@ public class AvengersState extends State {
         return Objects.hash(this.getIron().getX(),this.getIron().getY(), Arrays.hashCode(this.getStatus()));
     }
 	
-	
+	public String toString() {
+		return this.getIron().toString();
+	}
 	
 }
  
