@@ -2,6 +2,7 @@
 package Avengers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import AvengersOperators.*;
 import generic.Operator;
@@ -45,9 +46,9 @@ public class EndGame extends Problem {
 
 	// IsVisitedState predicate checks if the state is repeated.
 	public boolean isVisitedState(Node node) {
-			if (statespace.contains(node.getState())) {
-				return true;
-			}
+		if (statespace.contains(node.getState())) {
+			return true;
+		}
 		return false;
 	}
 
@@ -55,7 +56,7 @@ public class EndGame extends Problem {
 	// world or not.
 	public boolean isCollectedStones(Node node) {
 		boolean stones = true;
-		byte [] status = ((AvengersState) node.getState()).getStatus();
+		byte[] status = ((AvengersState) node.getState()).getStatus();
 		for (int i = 2; i < status.length; i++) {
 			if (status[i] < 8) {
 				stones = false;
@@ -77,9 +78,9 @@ public class EndGame extends Problem {
 
 	// The Cost function computes the damage units inflicted to Iron Man at a given
 	// state.
-	public int pathCost(Node node) {
-		Cell iron = ((AvengersState) node.getState()).getIron();
-		byte[] status = ((AvengersState) node.getState()).getStatus();
+	public int pathCost(State state) {
+		Cell iron = ((AvengersState) state).getIron();
+		byte[] status = ((AvengersState) state).getStatus();
 		Cell gridBorders = this.coordinates[0];
 		int dmg = 0;
 		for (int i = 0; i < 4; i++) {
@@ -91,10 +92,11 @@ public class EndGame extends Problem {
 						dmg += 1;
 					}
 				}
-			}
-			if (((iron.getX() + movementX[i] == this.coordinates[1].getX())
-					&& (iron.getY() + movementY[i] == this.coordinates[1].getY()))) {
-				dmg += 5;
+
+				if (((iron.getX() + movementX[i] == this.coordinates[1].getX())
+						&& (iron.getY() + movementY[i] == this.coordinates[1].getY()))) {	
+					dmg += 5;
+				}
 			}
 		}
 		if (((iron.getX() == this.coordinates[1].getX()) && (iron.getY() == this.coordinates[1].getY()))) {
@@ -115,71 +117,71 @@ public class EndGame extends Problem {
 				operators.add(new Snap());
 			}
 		}
-		//else {
-			int statusIndex = 2;
-			while (statusIndex < status.length && status[statusIndex] < 8) {
-				byte index = status[statusIndex];
-				Cell inspected = getCoordinates()[index];
-				// Collect a stone in the cell.
-				if (((iron.getX() == inspected.getX()) && (iron.getY() == inspected.getY()))) {
+		// else {
+		int statusIndex = 2;
+		while (statusIndex < status.length && status[statusIndex] < 8) {
+			byte index = status[statusIndex];
+			Cell inspected = getCoordinates()[index];
+			// Collect a stone in the cell.
+			if (((iron.getX() == inspected.getX()) && (iron.getY() == inspected.getY()))) {
 //					isCollect = true;
-					operators.add(new Collect(statusIndex));
-					break;
-				}
-				statusIndex++;
+				operators.add(new Collect(statusIndex));
+				break;
 			}
-			int prevStatusIndex = statusIndex;
-			// Allowed moves in a state.
-			//if (!isCollect) {
-				// checks the four adjacent cells.
-				int warriorsLength = 0;
-				boolean isWarriors = false;
-				int[] warriorLocations = new int[4];
-				for (int i = 0; i < 4; i++) {
-					boolean isWarriorAtDirection = false;
-					if (iron.getX() + movementX[i] >= 0 && iron.getX() + movementX[i] < gridBorders.getX()
-							&& iron.getY() + movementY[i] >= 0 && iron.getY() + movementY[i] < gridBorders.getY()) {
-						for (; statusIndex < status.length; statusIndex++) {
-							byte index = status[statusIndex];
-							//System.out.print("INDEX : " + index + ",");
-							Cell inspected = getCoordinates()[index];
-							//System.out.print(inspected + "; " + (iron.getX() + movementX[i]) + "," + (iron.getY() + movementY[i]) + "| ");
-							if (index >= 8) {
-								if (((iron.getX() + movementX[i] == inspected.getX())
-										&& (iron.getY() + movementY[i] == inspected.getY()))) {
-									warriorLocations[warriorsLength] = index;
-									warriorsLength++;
-									isWarriors = true;
-									isWarriorAtDirection = true;
-								}
-							}
+			statusIndex++;
+		}
+		int prevStatusIndex = statusIndex;
+		// Allowed moves in a state.
+		// if (!isCollect) {
+		// checks the four adjacent cells.
+		int warriorsLength = 0;
+		boolean isWarriors = false;
+		int[] warriorLocations = new int[4];
+		for (int i = 0; i < 4; i++) {
+			boolean isWarriorAtDirection = false;
+			if (iron.getX() + movementX[i] >= 0 && iron.getX() + movementX[i] < gridBorders.getX()
+					&& iron.getY() + movementY[i] >= 0 && iron.getY() + movementY[i] < gridBorders.getY()) {
+				for (; statusIndex < status.length; statusIndex++) {
+					byte index = status[statusIndex];
+					// System.out.print("INDEX : " + index + ",");
+					Cell inspected = getCoordinates()[index];
+					// System.out.print(inspected + "; " + (iron.getX() + movementX[i]) + "," +
+					// (iron.getY() + movementY[i]) + "| ");
+					if (index >= 8) {
+						if (((iron.getX() + movementX[i] == inspected.getX())
+								&& (iron.getY() + movementY[i] == inspected.getY()))) {
+							warriorLocations[warriorsLength] = index;
+							warriorsLength++;
+							isWarriors = true;
+							isWarriorAtDirection = true;
 						}
-						statusIndex = prevStatusIndex;
-						if (!isWarriorAtDirection) {
-							// checks if Thanos is adjacent and all of the stones are collected to
-							// transition of the goal state.
-							if (((iron.getX() + movementX[i] == this.coordinates[1].getX())
-									&& (iron.getY() + movementY[i] == this.coordinates[1].getY()))) {
-								if (this.isCollectedStones(node)) {
-									operators.add(new Movement(i));
-								}
-							} else {
-								// Transition to the successor state where Iron man moved to an empty cell.
-								operators.add(new Movement(i));
-							}
-						}
-
 					}
 				}
-				
-				//System.out.println();
-				if (isWarriors) {
-					operators.add(new Kill(warriorLocations, warriorsLength));
+				statusIndex = prevStatusIndex;
+				if (!isWarriorAtDirection) {
+					// checks if Thanos is adjacent and all of the stones are collected to
+					// transition of the goal state.
+					if (((iron.getX() + movementX[i] == this.coordinates[1].getX())
+							&& (iron.getY() + movementY[i] == this.coordinates[1].getY()))) {
+						if (this.isCollectedStones(node)) {
+							operators.add(new Movement(i));
+						}
+					} else {
+						// Transition to the successor state where Iron man moved to an empty cell.
+						operators.add(new Movement(i));
+					}
 				}
-				
-				
-			//}
-		//}
+
+			}
+		}
+
+		// System.out.println();
+		if (isWarriors) {
+			operators.add(new Kill(warriorLocations, warriorsLength));
+		}
+
+		// }
+		// }
 		return operators;
 	}
 
@@ -192,7 +194,7 @@ public class EndGame extends Problem {
 			Node successorState = o.transition(this, node);
 			if (successorState != null && !isVisitedState(successorState))
 				successorStates.add(successorState);
-				addState(successorState.getState());
+			addState(successorState.getState());
 		}
 		return successorStates;
 	}

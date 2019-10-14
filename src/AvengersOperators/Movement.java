@@ -10,7 +10,7 @@ public class Movement extends GeneralLookUpInspection {
 
 	int direction;
 	String[] movement;
-	
+
 	public Movement(int direction) {
 		super("Move", 0);
 		this.direction = direction;
@@ -29,13 +29,13 @@ public class Movement extends GeneralLookUpInspection {
 		for (int j = 2; j < ((AvengersState) node.getState()).getGrid().length; j++) {
 			SuccessorGridStatus[j] = ((AvengersState) node.getState()).getGrid()[j];
 		}
-		int inflicted = problem.pathCost(node) + this.getCost();
+		AvengersState successorState = new AvengersState(SuccessorGridStatus);
+		int inflicted = problem.pathCost(successorState) + this.getCost();
 		int costSuccessor = node.getPathCost() + inflicted;
-		Node successorState = new Node(new AvengersState(SuccessorGridStatus), movement[direction],
-				costSuccessor, node.getDepth() + 1, node);
-		return successorState;
+		Node successorNode = new Node(successorState, movement[direction], costSuccessor, node.getDepth() + 1, node);
+		return successorNode;
 	}
-	
+
 	public String toString() {
 		return this.getName() + ";" + this.direction;
 	}

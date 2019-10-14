@@ -32,7 +32,7 @@ public abstract class Problem {
 	
 	public abstract boolean goalTest(Node node);
 	
-	public abstract int pathCost(Node node);
+	public abstract int pathCost(State state);
 	
 	public abstract ArrayList<Node> expand(Node node);
 	

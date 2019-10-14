@@ -26,10 +26,11 @@ public class Collect extends Operator {
 			SuccessorGridStatus[successorGridStatusIndex] = ((AvengersState) node.getState()).getGrid()[k];
 			successorGridStatusIndex++;
 		}
-		int inflected = this.getCost();
+		AvengersState successorState = new AvengersState(SuccessorGridStatus);
+		int inflected = this.getCost() + problem.pathCost(successorState);
 		int costSuccessor = node.getPathCost() + inflected;
-		Node successorState = new Node(new AvengersState(SuccessorGridStatus), this.getName(), costSuccessor,
+		Node successorNode = new Node(successorState, this.getName(), costSuccessor,
 				node.getDepth() + 1, node);
-		return successorState;
+		return successorNode;
 	}
 }

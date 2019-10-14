@@ -45,6 +45,6 @@ public class Node implements Comparable<Node> {
 	}
 
 	public String toString() {
-		return String.valueOf(this.getOperator()) + "/" + this.getState() + "?" + this.getParent();
+		return String.valueOf(this.getOperator()) + "/" + this.getState() + "|"+ this.getPathCost()+ "?" + this.getParent();
 	}
 }

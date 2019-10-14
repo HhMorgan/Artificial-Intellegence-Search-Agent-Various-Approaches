@@ -18,26 +18,25 @@ public class Kill extends GeneralLookUpInspection {
 
 	@Override
 	public Node transition(Problem problem, Node node) {
-		int currentIndex =  this.warriorLocations.length - this.warriorLength;
+		int currentIndex = this.warriorLocations.length - this.warriorLength;
 		int successorGridStatusIndex = 0;
 		Arrays.sort(this.warriorLocations);
 		byte[] SuccessorGridStatus = new byte[((AvengersState) node.getState()).getGrid().length - this.warriorLength];
 		for (int k = 0; k < ((AvengersState) node.getState()).getGrid().length; k++) {
-			if (currentIndex < this.warriorLocations.length  && this.warriorLocations[currentIndex] == ((AvengersState) node.getState()).getGrid()[k]) {
+			if (currentIndex < this.warriorLocations.length
+					&& this.warriorLocations[currentIndex] == ((AvengersState) node.getState()).getGrid()[k]) {
 				currentIndex++;
-			}
-			else {
+			} else {
 				SuccessorGridStatus[successorGridStatusIndex] = ((AvengersState) node.getState()).getGrid()[k];
-				successorGridStatusIndex ++;
+				successorGridStatusIndex++;
 			}
-			
+
 		}
-		int inflicted = problem.pathCost(node) + this.getCost();
+		AvengersState successorState = new AvengersState(SuccessorGridStatus);
+		int inflicted = problem.pathCost(successorState) + this.getCost();
 		int costSuccessor = node.getPathCost() + inflicted;
-		Node successorState = new Node(new AvengersState(SuccessorGridStatus), this.getName(), costSuccessor,
-				node.getDepth() + 1, node);
-		return successorState;
+		Node successorNode = new Node(successorState, this.getName(), costSuccessor, node.getDepth() + 1, node);
+		return successorNode;
 	}
 
 }
- 
