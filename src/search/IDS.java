@@ -43,7 +43,7 @@ public class IDS extends QueuingFunction {
 				// System.out.println(depth);
 				super.queue = new LinkedList<Node>();
 				this.problem.emptyStateSpace();
-				add(this.problem.getInitialState());
+				add(this.problem.getNode());
 			}
 		}
 		return ((LinkedList<Node>) queue).isEmpty();

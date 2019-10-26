@@ -2,16 +2,18 @@
 package search;
 
 import java.util.ArrayList;
+
+import Avengers.AvengersState;
 import generic.Node;
 import generic.Problem;
 
 public class Search {
 
 	public static Node search(Problem problem, QueuingFunction nodes) {
-		// int limit = 30;
+//		int limit = 20;
 		// int counter = 0;
-		nodes.add(problem.getInitialState());
-		problem.addState(problem.getInitialState().getState());
+		nodes.add(problem.getNode());
+		problem.addState(problem.getNode().getState());
 		while (!nodes.isEmpty()) {
 //			if(limit <= 0) {
 //				break;
@@ -20,7 +22,7 @@ public class Search {
 //			for (Node n : nodes.queue) {
 //				System.out.print(n + " |A| ");
 //			}
-			// System.out.println();
+//			 System.out.println();
 
 			//System.out.print("QUEUE : ");
 //			for (Node n : nodes.queue) {
@@ -52,7 +54,7 @@ public class Search {
 //				}
 //			}
 			nodes.add(successorStates);
-			// limit--;
+//			limit--;
 		}
 		return null;
 	}

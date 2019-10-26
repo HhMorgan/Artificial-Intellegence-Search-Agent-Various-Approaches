@@ -21,7 +21,7 @@ public class Snap extends Operator {
 					SuccessorGridStatus[successorGridStatusIndex] = Byte.valueOf((byte) node.getPathCost());
 				} else {
 					//System.out.println(SuccessorGridStatus.length);
-					SuccessorGridStatus[successorGridStatusIndex] = 100;
+					SuccessorGridStatus[successorGridStatusIndex] = 101;
 				}
 				successorGridStatusIndex++;
 				continue;

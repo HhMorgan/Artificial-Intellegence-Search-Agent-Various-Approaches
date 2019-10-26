@@ -8,13 +8,13 @@ import search.QueuingFunction;
 
 public abstract class Problem {
 	
-	protected Node initialState;
+	protected Node node;
 	protected HashSet<State> statespace;
 	protected Operator[] operators;
 	protected int expandedNodes;
 	
-	public Node getInitialState() {
-		return this.initialState;
+	public Node getNode() {
+		return this.node;
 	}
 	
 	public HashSet<State> getStatespace() {
@@ -44,8 +44,8 @@ public abstract class Problem {
 	public abstract ArrayList<Node> expand(Node node);
 	
 	public Node search(QueuingFunction nodes) {
-		nodes.add(getInitialState());
-		addState(getInitialState().getState());
+		nodes.add(getNode());
+		addState(getNode().getState());
 		while (!nodes.isEmpty()) {
 			Node node = nodes.remove();
 			expandedNodes++;
