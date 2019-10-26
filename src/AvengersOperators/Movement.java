@@ -14,8 +14,6 @@ public class Movement extends GeneralLookUpInspection {
 	public Movement(int direction) {
 		super("Move", 0);
 		this.direction = direction;
-		//String[] movement = { "up", "right", "down", "left" };
-		//String[] movement = {"left", "down", "right", "up" };
 		String[] movement = { "left", "right", "up", "down" };
 		this.movement = movement;
 	}

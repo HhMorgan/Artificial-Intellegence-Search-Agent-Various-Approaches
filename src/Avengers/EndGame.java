@@ -15,17 +15,16 @@ public class EndGame extends Problem {
 	// Directions are mapped based on D-pad clockwise
 	// movement where the start is the up direction.
 	static final byte[] movementX = { 0, 0, -1, 1 };
-	static final byte[] movementY = { -1, 1, 0, 0};
-	//String[] movement = { "up", "right", "down", "left" };
+	static final byte[] movementY = { -1, 1, 0, 0 };
+	// String[] movement = { "up", "right", "down", "left" };
 	private Cell[] coordinates;
 
 	public EndGame(State initialState, Cell[] coordinates) {
 		this.coordinates = coordinates;
-		this.node = new Node(initialState, null, pathCost(initialState), 0, null);
+		this.initialNode = new Node(initialState, null, pathCost(initialState), 0, null);
 		this.statespace = new HashSet<State>();
 		this.statespace.add(initialState);
 	}
-
 
 	public Cell[] getCoordinates() {
 		return coordinates;
@@ -42,7 +41,7 @@ public class EndGame extends Problem {
 
 	public void emptyStateSpace() {
 		this.statespace = new HashSet<State>();
-		this.statespace.add(node.getState());
+		this.statespace.add(initialNode.getState());
 	}
 
 	// IsVisitedState predicate checks if the state is repeated.
@@ -80,7 +79,8 @@ public class EndGame extends Problem {
 	public int pathCost(State state) {
 		Cell iron = ((AvengersState) state).getIron();
 		byte[] status = ((AvengersState) state).getStatus();
-		int warriorInitialIndex = binarySearch(Arrays.copyOfRange(status,1,status.length), 0, status.length - 2, 8) + 1;
+		int warriorInitialIndex = binarySearch(Arrays.copyOfRange(status, 1, status.length), 0, status.length - 2, 8)
+				+ 1;
 		Cell gridBorders = this.coordinates[0];
 		int dmg = 0;
 		for (int i = 0; i < 4; i++) {
@@ -221,29 +221,33 @@ public class EndGame extends Problem {
 		Cell iron = state.getIron();
 		byte[] status = state.getStatus();
 		int predictedCost = 0;
-		int warriorInitialIndex = binarySearch(Arrays.copyOfRange(status,1,status.length), 0, status.length - 2, 8) + 1;
+		int warriorInitialIndex = binarySearch(Arrays.copyOfRange(status, 1, status.length), 0, status.length - 2, 8)
+				+ 1;
 		int warriorsInspectIndex;
-		ArrayList<Integer> warriorsAdjacentStones = new ArrayList<Integer>();
 		for (int i = 2; i < status.length; i++) {
 			int index = status[i];
 			if (index < 8) {
 				predictedCost += 3;
 				Cell inspectedStone = getCoordinates()[index];
+				for (int j = 0; j < 3; j++) {
+					if (inspectedStone.getX() + movementX[j] == getCoordinates()[1].getX()
+							&& inspectedStone.getY() + movementY[j] == getCoordinates()[1].getY()) {
+						predictedCost += 5;
+						break;
+					}
+				}
 				if (warriorInitialIndex >= 0) {
 					warriorsInspectIndex = warriorInitialIndex;
 					for (; warriorsInspectIndex < status.length; warriorsInspectIndex++) {
 						Cell inspectedWarrior = getCoordinates()[warriorsInspectIndex];
 						for (int j = 0; j < 3; j++) {
+
 							if (inspectedStone.getX() + movementX[j] == inspectedWarrior.getX()
 									&& inspectedStone.getY() + movementY[j] == inspectedWarrior.getY()) {
 								predictedCost += 1;
-								warriorsAdjacentStones.add(warriorsInspectIndex);
 								break;
 							}
-							if(inspectedStone.getX() + movementX[j] == getCoordinates()[1].getX()
-									&& inspectedStone.getY() + movementY[j] == getCoordinates()[1].getY()) {
-								predictedCost += 5;
-							}
+
 						}
 					}
 				}
@@ -275,35 +279,34 @@ public class EndGame extends Problem {
 
 	public int oracleCostRelaxed(Node node) {
 		AvengersState state = (AvengersState) node.getState();
+		Cell iron = state.getIron();
 		byte[] status = state.getStatus();
 		int predictedCost = 0;
-		int warriorInitialIndex = binarySearch(Arrays.copyOfRange(status,1,status.length), 0, status.length - 2, 8) + 1;
-		int warriorsInspectIndex;
 		for (int i = 2; i < status.length; i++) {
 			int index = status[i];
 			if (index < 8) {
 				predictedCost += 3;
-				Cell inspectedStone = getCoordinates()[index];
-				if (warriorInitialIndex >= 0) {
-					warriorsInspectIndex = warriorInitialIndex;
-					for (; warriorsInspectIndex < status.length; warriorsInspectIndex++) {
-						Cell inspectedWarrior = getCoordinates()[warriorsInspectIndex];
-						for (int j = 0; j < 3; j++) {
-							if (inspectedStone.getX() + movementX[j] == inspectedWarrior.getX()
-									&& inspectedStone.getY() + movementY[j] == inspectedWarrior.getY()) {
-								predictedCost += 1;
-								break;
-							}
-						}
-					}
-				}
-
 			} else {
 				break;
 			}
 		}
 		if (node.getOperator() == null || !node.getOperator().equals("snap")) {
-			predictedCost += 5;
+			if (!((iron.getX() == getCoordinates()[1].getX()) && (iron.getY() == getCoordinates()[1].getY()))) {
+				boolean isThanosAdjacent = false;
+				for (int j = 0; j < 3; j++) {
+					if (((iron.getX() + movementX[j] == getCoordinates()[1].getX())
+							&& (iron.getY() + movementY[j] == getCoordinates()[1].getY()))) {
+						isThanosAdjacent = true;
+					}
+				}
+				if (!(isCollectedStones(node) && isThanosAdjacent)) {
+					predictedCost += 10;
+				}
+			} else {
+				if (isCollectedStones(node)) {
+					predictedCost += 5;
+				}
+			}
 		}
 		return predictedCost;
 	}

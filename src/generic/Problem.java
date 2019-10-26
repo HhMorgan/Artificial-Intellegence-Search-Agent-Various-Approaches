@@ -8,13 +8,13 @@ import search.QueuingFunction;
 
 public abstract class Problem {
 	
-	protected Node node;
+	protected Node initialNode;
 	protected HashSet<State> statespace;
 	protected Operator[] operators;
 	protected int expandedNodes;
 	
 	public Node getNode() {
-		return this.node;
+		return this.initialNode;
 	}
 	
 	public HashSet<State> getStatespace() {
