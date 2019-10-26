@@ -10,7 +10,7 @@ public class Collect extends Operator {
 	int collected;
 
 	public Collect(int collected) {
-		super("Collect", 3);
+		super("collect", 3);
 		this.collected = collected + 2;
 
 	}

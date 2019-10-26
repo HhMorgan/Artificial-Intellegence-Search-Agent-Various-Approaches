@@ -8,18 +8,19 @@ import generic.Problem;
 public class Snap extends Operator {
 
 	public Snap() {
-		super("Snap", 0);
+		super("snap", 0);
 	}
 
 	@Override
 	public Node transition(Problem problem, Node node) {
 		int successorGridStatusIndex = 0;
-		byte[] SuccessorGridStatus = new byte[((AvengersState) node.getState()).getGrid().length - 1];
+		byte[] SuccessorGridStatus = new byte[((AvengersState) node.getState()).getGrid().length];
 		for (int k = 0; k < ((AvengersState) node.getState()).getGrid().length; k++) {
 			if (k == 2) {
-				if (node.getPathCost() < 100) {
+				if (node.getPathCost() <= 100) {
 					SuccessorGridStatus[successorGridStatusIndex] = Byte.valueOf((byte) node.getPathCost());
 				} else {
+					//System.out.println(SuccessorGridStatus.length);
 					SuccessorGridStatus[successorGridStatusIndex] = 100;
 				}
 				successorGridStatusIndex++;

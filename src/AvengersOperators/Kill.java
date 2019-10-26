@@ -11,7 +11,7 @@ public class Kill extends GeneralLookUpInspection {
 	private int warriorLength;
 
 	public Kill(int[] warriorLocations, int warriorLength) {
-		super("Kill", 2);
+		super("kill", 2);
 		this.warriorLocations = warriorLocations;
 		this.warriorLength = warriorLength;
 	}
@@ -23,7 +23,7 @@ public class Kill extends GeneralLookUpInspection {
 		Arrays.sort(this.warriorLocations);
 		byte[] SuccessorGridStatus = new byte[((AvengersState) node.getState()).getGrid().length - this.warriorLength];
 		for (int k = 0; k < ((AvengersState) node.getState()).getGrid().length; k++) {
-			if (currentIndex < this.warriorLocations.length
+			if (k > 2 && currentIndex < this.warriorLocations.length
 					&& this.warriorLocations[currentIndex] == ((AvengersState) node.getState()).getGrid()[k]) {
 				currentIndex++;
 			} else {

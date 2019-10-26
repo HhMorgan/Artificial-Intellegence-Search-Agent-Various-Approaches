@@ -1,33 +1,48 @@
 package search;
 
 import java.util.ArrayList;
-
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.function.Function;
 import generic.Node;
 
-public class AS extends QueuingFunction{
+
+public class AS extends QueuingFunction {
+
+	public AS(Function<Node, Integer> heuristicFunc) {
+		super.queue = new PriorityQueue<Node>(new Comparator<Node>() {
+
+			@Override
+			public int compare(Node node1, Node node2) {
+				int distance_a = heuristicFunc.apply(node1) + node1.getPathCost();
+				int distance_b = heuristicFunc.apply(node2) + node2.getPathCost();
+
+				return Integer.compare(distance_a, distance_b);
+			}
+
+		});
+	}
 
 	@Override
-	public void add(ArrayList<Node>  node) {
-		// TODO Auto-generated method stub
-		
+	public void add(Node node) {
+		((PriorityQueue<Node>) queue).add(node);
+	}
+
+	@Override
+	public void add(ArrayList<Node> nodes) {
+		for (Node n : nodes) {
+			((PriorityQueue<Node>) queue).add(n);
+		}
 	}
 
 	@Override
 	public Node remove() {
-		// TODO Auto-generated method stub
-		return null;
+		return ((PriorityQueue<Node>) queue).poll();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void add(Node nodes) {
-		// TODO Auto-generated method stub
-		
+		return queue.isEmpty();
 	}
 
 }

@@ -3,12 +3,15 @@ package generic;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import search.QueuingFunction;
+
 
 public abstract class Problem {
 	
 	protected Node initialState;
 	protected HashSet<State> statespace;
 	protected Operator[] operators;
+	protected int expandedNodes;
 	
 	public Node getInitialState() {
 		return this.initialState;
@@ -20,6 +23,10 @@ public abstract class Problem {
 	
 	public Operator[] getOperators() {
 		return this.operators;
+	}
+	
+	public int getExpandedNodes() {
+		return this.expandedNodes;
 	}
 	
 	public abstract void addState(State state);
@@ -36,5 +43,19 @@ public abstract class Problem {
 	
 	public abstract ArrayList<Node> expand(Node node);
 	
+	public Node search(QueuingFunction nodes) {
+		nodes.add(getInitialState());
+		addState(getInitialState().getState());
+		while (!nodes.isEmpty()) {
+			Node node = nodes.remove();
+			expandedNodes++;
+			if (goalTest(node)) {
+				return node;
+			}
+			ArrayList<Node> successorStates = expand(node);
+			nodes.add(successorStates);
+		}
+		return null;
+	}
 
 }

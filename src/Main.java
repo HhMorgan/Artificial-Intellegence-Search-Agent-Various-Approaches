@@ -1,8 +1,10 @@
+import java.util.Arrays;
 
 import Avengers.AvengersState;
 import Avengers.EndGame;
 import generic.Cell;
 import generic.Node;
+import search.AS;
 import search.BFS;
 import search.DFS;
 import search.IDS;
@@ -10,6 +12,38 @@ import search.Search;
 import search.UCS;
 
 public class Main {
+	
+	public static char[][] printGrid(String grid) {
+		String[] parsedString = grid.split(";");
+		String[] sizeString = parsedString[0].split(",");
+		String[] characterString = parsedString[1].split(",");
+		String[] villainString = parsedString[2].split(",");
+		String[] collectableString = parsedString[3].split(",");
+		String[] enemyString = parsedString[4].split(",");
+		byte m = Byte.parseByte(sizeString[0].trim(), 10);
+		byte n = Byte.parseByte(sizeString[1], 10);
+		char [][] gridVis = new char [m][n];
+		for (char[] row: gridVis)
+		    Arrays.fill(row, '_');
+		byte ix = Byte.parseByte(characterString[0], 10);
+		byte iy = Byte.parseByte(characterString[1], 10);
+		gridVis[ix][iy] = 'I';
+		byte tx = Byte.parseByte(villainString[0], 10);
+		byte ty = Byte.parseByte(villainString[1], 10);
+		Cell thanos = new Cell(tx, ty);
+		gridVis[tx][ty] = 'T';
+		for (int i = 0; i < collectableString.length - 1; i += 2) {
+			byte sx = Byte.parseByte(collectableString[i], 10);
+			byte sy = Byte.parseByte(collectableString[i + 1], 10);
+			gridVis[sx][sy] = 'S';
+		}
+		for (int i = 0; i < enemyString.length - 1; i += 2) {
+			byte wx = Byte.parseByte(enemyString[i], 10);
+			byte wy = Byte.parseByte(enemyString[i + 1], 10);
+			gridVis[wx][wy] = 'W';
+		}
+		return gridVis;
+	}
 	
 	public static String solve(String grid, String strategy, boolean visualize) {
 		String[] parsedString = grid.split(";");
@@ -47,32 +81,48 @@ public class Main {
 		for(int i = 2; i < gridStatus.length; i++) {
 			gridStatus[i] = Byte.valueOf((byte) (i - 2));
 		}
-		Node initialState = new Node(new AvengersState(gridStatus), "start", 0, 0, null);
+		Node initialState = new Node(new AvengersState(gridStatus), null, 0, 0, null);
 		EndGame problem = new EndGame(initialState, encoding);
 		//search strategy determination.
 		Node goal = null;
+		
+//		switch(strategy) {
+//		case "BF" : goal = (Node) Search.search(problem, new BFS());break;
+//		case "DF" : goal = (Node) Search.search(problem, new DFS());break;
+//		case "UC" : goal = (Node) Search.search(problem, new UCS());break;
+//		case "ID" : goal = (Node) Search.search(problem, new IDS(problem));break;
+//		case "AS1" : goal = (Node) Search.search(problem, new AS(problem :: oracleCost));break;
+//	}
+		
 		switch(strategy) {
-			case "BFS" : goal = (Node) Search.search(problem, new BFS());break;
-			case "DFS" : goal = (Node) Search.search(problem, new DFS());break;
-			case "UCS" : goal = (Node) Search.search(problem, new UCS());break;
-			case "IDS" : goal = (Node) Search.search(problem, new IDS(problem));break;
+			case "BF" : goal = (Node) problem.search(new BFS());break;
+			case "DF" : goal = (Node) problem.search( new DFS());break;
+			case "UC" : goal = (Node) problem.search( new UCS());break;
+			case "ID" : goal = (Node) problem.search( new IDS(problem));break;
+			case "AS1" : goal = (Node) problem.search( new AS(problem :: oracleCost));break;
 		}
-		String result = (goal != null)? goal.toString() + ";" + goal.getPathCost() : "There is no solution.";
+		//System.out.println(printPath(goal)); .substring(1)
+		String result = (goal != null)? goal.toString().substring(1) + ";" + goal.getPathCost() + ";" + problem.getExpandedNodes(): "There is no solution.";
 		
 		return result;
 	}
 
 	public static void main(String[] args) {
 		//String grid = " 5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2";
-		String grid = " 5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2,3,4,4,3";
+		//String grid = " 5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2,3,4,4,3";
+		String grid = "6,6;5,3;0,1;4,3,2,1,3,0,1,2,4,5,1,1;1,3,3,3,1,0,1,4,2,2";
 		//String grid = " 5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,4,4,3";
 		//String grid = "10,10;7,7;5,9;0,2,3,7,5,4,8,6,8,9,9,1;0,3,4,5,8,3,9,7,9,3";
 		//String grid = "15,15;7,7;5,9;0,2,3,7,5,4,8,12,11,6,13,10;0,3,4,5,8,3";
 		//String grid = "15,15;7,7;5,9;0,2,3,7,5,4,8,12,11,6,13,10;0,3,4,5,8,3,9,7,14,3";
 		//String grid = "100,100;50,50;25,25;10,20,35,75,40,65,47,90,53,89,80,4;5,15,26,79,38,70,66,77";
 		//String grid = " 4,4;2,0;2,3;0,2,0,3,1,0,2,1,3,2,3,3;1,2";
+//		char [][] gridVis = printGrid(grid);
+//		for(char[] row : gridVis) {
+//			System.out.println(Arrays.toString(row));
+//		}
 		long startTime = System.currentTimeMillis();
-		System.out.println(solve(grid,"BFS",false));
+		System.out.println(solve(grid,"ID",false));
 		long stopTime = System.currentTimeMillis();
 	    long elapsedTime = stopTime - startTime;
 	    System.out.println(elapsedTime + " Miliseconds");

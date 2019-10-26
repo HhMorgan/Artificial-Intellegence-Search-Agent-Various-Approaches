@@ -68,11 +68,12 @@ public class EndGame extends Problem {
 
 	// The GoalTest predicate checks if the state is a goal state of not.
 	public boolean goalTest(Node node) {
-		if (this.isCollectedStones(node)) {
-			if (node.getOperator().equals("Snap") && node.getPathCost() < 100) {
-				return true;
-			}
+		// if (this.isCollectedStones(node)) {
+
+		if (node.getOperator() != null && node.getOperator().equals("snap") && node.getPathCost() < 100) {
+			return true;
 		}
+		// }
 		return false;
 	}
 
@@ -94,7 +95,7 @@ public class EndGame extends Problem {
 				}
 
 				if (((iron.getX() + movementX[i] == this.coordinates[1].getX())
-						&& (iron.getY() + movementY[i] == this.coordinates[1].getY()))) {	
+						&& (iron.getY() + movementY[i] == this.coordinates[1].getY()))) {
 					dmg += 5;
 				}
 			}
@@ -199,4 +200,103 @@ public class EndGame extends Problem {
 		return successorStates;
 	}
 
+	private int binarySearch(byte arr[], int l, int r, int x) {
+		if (r >= l) {
+			int mid = l + (r - l) / 2;
+
+			// If the element is present at the
+			// middle itself
+			if (mid >= 1) {
+				if (arr[mid] >= x && arr[mid - 1] < x)
+					return mid;
+			} else {
+				if (arr[mid] >= x && mid == 0)
+					return mid;
+			}
+
+			// If element is smaller than mid, then
+			// it can only be present in left subarray
+			if (arr[mid] > x)
+				return binarySearch(arr, l, mid - 1, x);
+
+			// Else the element can only be present
+			// in right subarray
+			return binarySearch(arr, mid + 1, r, x);
+		}
+
+		// We reach here when element is not present
+		// in array
+		return -1;
+	}
+
+	public int oracleCost(Node node) {
+		AvengersState state = (AvengersState) node.getState();
+		Cell iron = state.getIron();
+		byte[] status = state.getStatus();
+		int predictedCost = 0;
+		int warriorInitialIndex = binarySearch(status, 0, status.length - 1, 8);
+		// System.out.println(warriorInitialIndex);
+		int warriorsInspectIndex;
+
+		ArrayList<Integer> warriorsAdjacentStones = new ArrayList<Integer>();
+		for (int i = 2; i < status.length; i++) {
+			int index = status[i];
+			if (index < 8) {
+				predictedCost += 3;
+				Cell inspectedStone = getCoordinates()[index];
+				if (warriorInitialIndex >= 0) {
+					warriorsInspectIndex = warriorInitialIndex;
+					for (; warriorsInspectIndex < status.length; warriorsInspectIndex++) {
+						Cell inspectedWarrior = getCoordinates()[warriorsInspectIndex];
+						for (int j = 0; j < 3; j++) {
+							if (inspectedStone.getX() + movementX[j] == inspectedWarrior.getX()
+									&& inspectedStone.getY() + movementY[j] == inspectedWarrior.getY()) {
+								predictedCost += 1;
+								warriorsAdjacentStones.add(warriorsInspectIndex);
+								break;
+							}
+						}
+					}
+				}
+
+			} else {
+				break;
+			}
+		}
+
+		if (warriorInitialIndex >= 0) {
+			warriorsInspectIndex = warriorInitialIndex;
+			for (; warriorsInspectIndex < status.length; warriorsInspectIndex++) {
+				if (!warriorsAdjacentStones.contains(warriorsInspectIndex)) {
+					for (int i = 0; i < 3; i++) {
+						Cell inspectedWarrior = getCoordinates()[warriorsInspectIndex];
+						if (iron.getX() + movementX[i] == inspectedWarrior.getX()
+								&& iron.getY() + movementY[i] == inspectedWarrior.getY()) {
+							predictedCost += 1;
+						}
+					}
+				}
+			}
+		}
+		if (!node.getOperator().equals("Snap")) {
+			if (!((iron.getX() == getCoordinates()[1].getX()) && (iron.getY() == getCoordinates()[1].getY()))) {
+				if (isCollectedStones(node)) {
+					boolean isThanosAdjacent = false;
+					for (int j = 0; j < 3; j++) {
+						if (((iron.getX() + movementX[j] == getCoordinates()[1].getX())
+								&& (iron.getY() + movementY[j] == getCoordinates()[1].getY()))) {
+							isThanosAdjacent = true;
+						}
+					}
+					if (isThanosAdjacent) {
+						predictedCost += 5;
+					} else {
+						predictedCost += 10;
+					}
+				}
+
+			}
+		}
+		return predictedCost;
+	}
 }
