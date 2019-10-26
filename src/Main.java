@@ -7,6 +7,7 @@ import generic.Node;
 import search.AS;
 import search.BFS;
 import search.DFS;
+import search.GS;
 import search.IDS;
 import search.Search;
 import search.UCS;
@@ -100,8 +101,11 @@ public class Main {
 			case "UC" : goal = (Node) problem.search( new UCS());break;
 			case "ID" : goal = (Node) problem.search( new IDS(problem));break;
 			case "AS1" : goal = (Node) problem.search( new AS(problem :: oracleCost));break;
+			case "AS2" : goal = (Node) problem.search( new AS(problem :: oracleCostRelaxed));break;
+			case "GR1" : goal = (Node) problem.search( new GS(problem :: oracleCost));break;
+			case "GR2" : goal = (Node) problem.search( new GS(problem :: oracleCostRelaxed));break;
 		}
-		//System.out.println(printPath(goal)); .substring(1)
+		
 		String result = (goal != null)? goal.toString().substring(1) + ";" + goal.getPathCost() + ";" + problem.getExpandedNodes(): "There is no solution.";
 		
 		return result;
@@ -109,8 +113,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		//String grid = " 5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2";
-		//String grid = " 5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2,3,4,4,3";
-		String grid = "6,6;5,3;0,1;4,3,2,1,3,0,1,2,4,5,1,1;1,3,3,3,1,0,1,4,2,2";
+		String grid = " 5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2,3,4,4,3";
+		//String grid = "6,6;5,3;0,1;4,3,2,1,3,0,1,2,4,5,1,1;1,3,3,3,1,0,1,4,2,2";
 		//String grid = " 5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,4,4,3";
 		//String grid = "10,10;7,7;5,9;0,2,3,7,5,4,8,6,8,9,9,1;0,3,4,5,8,3,9,7,9,3";
 		//String grid = "15,15;7,7;5,9;0,2,3,7,5,4,8,12,11,6,13,10;0,3,4,5,8,3";
@@ -122,7 +126,7 @@ public class Main {
 //			System.out.println(Arrays.toString(row));
 //		}
 		long startTime = System.currentTimeMillis();
-		System.out.println(solve(grid,"ID",false));
+		System.out.println(solve(grid,"GR2",false));
 		long stopTime = System.currentTimeMillis();
 	    long elapsedTime = stopTime - startTime;
 	    System.out.println(elapsedTime + " Miliseconds");

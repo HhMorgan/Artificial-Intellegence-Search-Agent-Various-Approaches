@@ -14,10 +14,10 @@ public class AS extends QueuingFunction {
 
 			@Override
 			public int compare(Node node1, Node node2) {
-				int distance_a = heuristicFunc.apply(node1) + node1.getPathCost();
-				int distance_b = heuristicFunc.apply(node2) + node2.getPathCost();
+				int heuristicCostA = heuristicFunc.apply(node1) + node1.getPathCost();
+				int heuristicCostB = heuristicFunc.apply(node2) + node2.getPathCost();
 
-				return Integer.compare(distance_a, distance_b);
+				return Integer.compare(heuristicCostA, heuristicCostB);
 			}
 
 		});

@@ -280,23 +280,59 @@ public class EndGame extends Problem {
 		}
 		if (!node.getOperator().equals("Snap")) {
 			if (!((iron.getX() == getCoordinates()[1].getX()) && (iron.getY() == getCoordinates()[1].getY()))) {
-				if (isCollectedStones(node)) {
-					boolean isThanosAdjacent = false;
-					for (int j = 0; j < 3; j++) {
-						if (((iron.getX() + movementX[j] == getCoordinates()[1].getX())
-								&& (iron.getY() + movementY[j] == getCoordinates()[1].getY()))) {
-							isThanosAdjacent = true;
-						}
-					}
-					if (isThanosAdjacent) {
-						predictedCost += 5;
-					} else {
-						predictedCost += 10;
+				boolean isThanosAdjacent = false;
+				for (int j = 0; j < 3; j++) {
+					if (((iron.getX() + movementX[j] == getCoordinates()[1].getX())
+							&& (iron.getY() + movementY[j] == getCoordinates()[1].getY()))) {
+						isThanosAdjacent = true;
 					}
 				}
-
+				predictedCost += 10;
+				if (isThanosAdjacent) {
+					predictedCost += 5;
+				}
+			} else {
+				if (isCollectedStones(node)) {
+					predictedCost += 5;
+				}
 			}
 		}
 		return predictedCost;
 	}
+
+	public int oracleCostRelaxed(Node node) {
+		AvengersState state = (AvengersState) node.getState();
+		byte[] status = state.getStatus();
+		int predictedCost = 0;
+		int warriorInitialIndex = binarySearch(status, 0, status.length - 1, 8);
+		int warriorsInspectIndex;
+		for (int i = 2; i < status.length; i++) {
+			int index = status[i];
+			if (index < 8) {
+				predictedCost += 3;
+				Cell inspectedStone = getCoordinates()[index];
+				if (warriorInitialIndex >= 0) {
+					warriorsInspectIndex = warriorInitialIndex;
+					for (; warriorsInspectIndex < status.length; warriorsInspectIndex++) {
+						Cell inspectedWarrior = getCoordinates()[warriorsInspectIndex];
+						for (int j = 0; j < 3; j++) {
+							if (inspectedStone.getX() + movementX[j] == inspectedWarrior.getX()
+									&& inspectedStone.getY() + movementY[j] == inspectedWarrior.getY()) {
+								predictedCost += 1;
+								break;
+							}
+						}
+					}
+				}
+
+			} else {
+				break;
+			}
+		}
+		if (!node.getOperator().equals("Snap")) {
+			predictedCost += 5;
+		}
+		return predictedCost;
+	}
+
 }
