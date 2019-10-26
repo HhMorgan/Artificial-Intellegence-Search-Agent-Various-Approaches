@@ -68,12 +68,9 @@ public class EndGame extends Problem {
 
 	// The GoalTest predicate checks if the state is a goal state of not.
 	public boolean goalTest(Node node) {
-		// if (this.isCollectedStones(node)) {
-
 		if (node.getOperator() != null && node.getOperator().equals("snap") && node.getPathCost() < 100) {
 			return true;
 		}
-		// }
 		return false;
 	}
 
@@ -93,7 +90,6 @@ public class EndGame extends Problem {
 						dmg += 1;
 					}
 				}
-
 				if (((iron.getX() + movementX[i] == this.coordinates[1].getX())
 						&& (iron.getY() + movementY[i] == this.coordinates[1].getY()))) {
 					dmg += 5;
@@ -103,12 +99,10 @@ public class EndGame extends Problem {
 		if (((iron.getX() == this.coordinates[1].getX()) && (iron.getY() == this.coordinates[1].getY()))) {
 			dmg += 5;
 		}
-
 		return dmg;
 	}
 
 	public ArrayList<Operator> availableActions(Node node) {
-//		boolean isCollect = false;
 		Cell gridBorders = getCoordinates()[0];
 		Cell iron = ((AvengersState) node.getState()).getIron();
 		byte[] status = ((AvengersState) node.getState()).getStatus();
@@ -118,14 +112,12 @@ public class EndGame extends Problem {
 				operators.add(new Snap());
 			}
 		}
-		// else {
 		int statusIndex = 2;
 		while (statusIndex < status.length && status[statusIndex] < 8) {
 			byte index = status[statusIndex];
 			Cell inspected = getCoordinates()[index];
 			// Collect a stone in the cell.
 			if (((iron.getX() == inspected.getX()) && (iron.getY() == inspected.getY()))) {
-//					isCollect = true;
 				operators.add(new Collect(statusIndex));
 				break;
 			}
@@ -133,7 +125,6 @@ public class EndGame extends Problem {
 		}
 		int prevStatusIndex = statusIndex;
 		// Allowed moves in a state.
-		// if (!isCollect) {
 		// checks the four adjacent cells.
 		int warriorsLength = 0;
 		boolean isWarriors = false;
@@ -144,10 +135,7 @@ public class EndGame extends Problem {
 					&& iron.getY() + movementY[i] >= 0 && iron.getY() + movementY[i] < gridBorders.getY()) {
 				for (; statusIndex < status.length; statusIndex++) {
 					byte index = status[statusIndex];
-					// System.out.print("INDEX : " + index + ",");
 					Cell inspected = getCoordinates()[index];
-					// System.out.print(inspected + "; " + (iron.getX() + movementX[i]) + "," +
-					// (iron.getY() + movementY[i]) + "| ");
 					if (index >= 8) {
 						if (((iron.getX() + movementX[i] == inspected.getX())
 								&& (iron.getY() + movementY[i] == inspected.getY()))) {
@@ -175,14 +163,9 @@ public class EndGame extends Problem {
 
 			}
 		}
-
-		// System.out.println();
 		if (isWarriors) {
 			operators.add(new Kill(warriorLocations, warriorsLength));
 		}
-
-		// }
-		// }
 		return operators;
 	}
 
@@ -235,9 +218,7 @@ public class EndGame extends Problem {
 		byte[] status = state.getStatus();
 		int predictedCost = 0;
 		int warriorInitialIndex = binarySearch(status, 0, status.length - 1, 8);
-		// System.out.println(warriorInitialIndex);
 		int warriorsInspectIndex;
-
 		ArrayList<Integer> warriorsAdjacentStones = new ArrayList<Integer>();
 		for (int i = 2; i < status.length; i++) {
 			int index = status[i];

@@ -9,12 +9,11 @@ import search.BFS;
 import search.DFS;
 import search.GS;
 import search.IDS;
-import search.Search;
 import search.UCS;
 
 public class Main {
 	
-	public static char[][] printGrid(String grid) {
+	public static void printGrid(String grid) {
 		String[] parsedString = grid.split(";");
 		String[] sizeString = parsedString[0].split(",");
 		String[] characterString = parsedString[1].split(",");
@@ -31,7 +30,6 @@ public class Main {
 		gridVis[ix][iy] = 'I';
 		byte tx = Byte.parseByte(villainString[0], 10);
 		byte ty = Byte.parseByte(villainString[1], 10);
-		Cell thanos = new Cell(tx, ty);
 		gridVis[tx][ty] = 'T';
 		for (int i = 0; i < collectableString.length - 1; i += 2) {
 			byte sx = Byte.parseByte(collectableString[i], 10);
@@ -43,7 +41,9 @@ public class Main {
 			byte wy = Byte.parseByte(enemyString[i + 1], 10);
 			gridVis[wx][wy] = 'W';
 		}
-		return gridVis;
+		for(char[] row : gridVis) {
+			System.out.println(Arrays.toString(row));
+		}
 	}
 	
 	public static String solve(String grid, String strategy, boolean visualize) {
@@ -86,15 +86,6 @@ public class Main {
 		EndGame problem = new EndGame(initialState, encoding);
 		//search strategy determination.
 		Node goal = null;
-		
-//		switch(strategy) {
-//		case "BF" : goal = (Node) Search.search(problem, new BFS());break;
-//		case "DF" : goal = (Node) Search.search(problem, new DFS());break;
-//		case "UC" : goal = (Node) Search.search(problem, new UCS());break;
-//		case "ID" : goal = (Node) Search.search(problem, new IDS(problem));break;
-//		case "AS1" : goal = (Node) Search.search(problem, new AS(problem :: oracleCost));break;
-//	}
-		
 		switch(strategy) {
 			case "BF" : goal = (Node) problem.search(new BFS());break;
 			case "DF" : goal = (Node) problem.search( new DFS());break;
@@ -104,8 +95,7 @@ public class Main {
 			case "AS2" : goal = (Node) problem.search( new AS(problem :: oracleCostRelaxed));break;
 			case "GR1" : goal = (Node) problem.search( new GS(problem :: oracleCost));break;
 			case "GR2" : goal = (Node) problem.search( new GS(problem :: oracleCostRelaxed));break;
-		}
-		
+		}		
 		String result = (goal != null)? goal.toString().substring(1) + ";" + goal.getPathCost() + ";" + problem.getExpandedNodes(): "There is no solution.";
 		
 		return result;
@@ -121,12 +111,9 @@ public class Main {
 		//String grid = "15,15;7,7;5,9;0,2,3,7,5,4,8,12,11,6,13,10;0,3,4,5,8,3,9,7,14,3";
 		//String grid = "100,100;50,50;25,25;10,20,35,75,40,65,47,90,53,89,80,4;5,15,26,79,38,70,66,77";
 		//String grid = " 4,4;2,0;2,3;0,2,0,3,1,0,2,1,3,2,3,3;1,2";
-//		char [][] gridVis = printGrid(grid);
-//		for(char[] row : gridVis) {
-//			System.out.println(Arrays.toString(row));
-//		}
+		printGrid(grid);
 		long startTime = System.currentTimeMillis();
-		System.out.println(solve(grid,"GR2",false));
+		System.out.println(solve(grid,"AS1",false));
 		long stopTime = System.currentTimeMillis();
 	    long elapsedTime = stopTime - startTime;
 	    System.out.println(elapsedTime + " Miliseconds");

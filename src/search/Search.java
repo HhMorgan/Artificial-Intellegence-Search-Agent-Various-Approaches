@@ -2,8 +2,6 @@
 package search;
 
 import java.util.ArrayList;
-
-import Avengers.AvengersState;
 import generic.Node;
 import generic.Problem;
 
