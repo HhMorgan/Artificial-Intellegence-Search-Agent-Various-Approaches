@@ -176,15 +176,16 @@ public class EndGame extends Problem {
 	// The Transition function is the function that computes the expansion of some
 	// give state.
 	public ArrayList<Node> expand(Node node) {
-		ArrayList<Node> successorStates = new ArrayList<Node>();
+		ArrayList<Node> successorNodes = new ArrayList<Node>();
 		ArrayList<Operator> operators = availableActions(node);
 		for (Operator o : operators) {
 			Node successorNode = o.transition(this, node);
-			if (successorNode != null && successorNode.getPathCost() < 100 && !isVisitedState(successorNode))
-				successorStates.add(successorNode);
-			addState(successorNode.getState());
+			if (successorNode != null && successorNode.getPathCost() < 100 && !isVisitedState(successorNode)) {
+				successorNodes.add(successorNode);
+				addState(successorNode.getState());
+			}
 		}
-		return successorStates;
+		return successorNodes;
 	}
 
 	private int binarySearch(byte arr[], int l, int r, int x) {
