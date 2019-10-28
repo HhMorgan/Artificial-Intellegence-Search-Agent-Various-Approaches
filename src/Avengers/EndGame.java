@@ -222,8 +222,8 @@ public class EndGame extends Problem {
 		Cell iron = state.getIron();
 		byte[] status = state.getStatus();
 		int predictedCost = 0;
-		int warriorInitialIndex = binarySearch(Arrays.copyOfRange(status, 1, status.length), 0, status.length - 2, 8)
-				+ 1;
+		boolean stoneAdjacentThanos = false;
+		int warriorInitialIndex = binarySearch(Arrays.copyOfRange(status, 1, status.length), 0, status.length - 2, 8)+ 1;
 		int warriorsInspectIndex;
 		for (int i = 2; i < status.length; i++) {
 			int index = status[i];
@@ -234,6 +234,7 @@ public class EndGame extends Problem {
 					if (inspectedStone.getX() + movementX[j] == getCoordinates()[1].getX()
 							&& inspectedStone.getY() + movementY[j] == getCoordinates()[1].getY()) {
 						predictedCost += 5;
+						stoneAdjacentThanos = true;
 						break;
 					}
 				}
@@ -241,8 +242,7 @@ public class EndGame extends Problem {
 					warriorsInspectIndex = warriorInitialIndex;
 					for (; warriorsInspectIndex < status.length; warriorsInspectIndex++) {
 						Cell inspectedWarrior = getCoordinates()[warriorsInspectIndex];
-						for (int j = 0; j < 3; j++) {
-
+						for (int j = 0; j <= 3; j++) {
 							if (inspectedStone.getX() + movementX[j] == inspectedWarrior.getX()
 									&& inspectedStone.getY() + movementY[j] == inspectedWarrior.getY()) {
 								predictedCost += 1;
@@ -252,7 +252,6 @@ public class EndGame extends Problem {
 						}
 					}
 				}
-
 			} else {
 				break;
 			}
@@ -266,9 +265,13 @@ public class EndGame extends Problem {
 						isThanosAdjacent = true;
 					}
 				}
-				if (!(isCollectedStones(node) && isThanosAdjacent)) {
-					predictedCost += 10;
-				}
+				if (!(isCollectedStones(node) && isThanosAdjacent) && !stoneAdjacentThanos) {
+			          predictedCost += 10;
+			        } else {
+			          if (!(isCollectedStones(node) && isThanosAdjacent)) {
+			            predictedCost += 5;
+			          }
+			        }
 			} else {
 				if (isCollectedStones(node)) {
 					predictedCost += 5;
