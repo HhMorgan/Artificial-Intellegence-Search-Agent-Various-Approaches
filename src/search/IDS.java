@@ -15,12 +15,14 @@ public class IDS extends QueuingFunction {
 		this.problem = problem;
 		super.queue = new LinkedList<Node>();
 	}
-	
+
 	@Override
 	public void add(Node node) {
-		((LinkedList<Node>) super.queue).push(node);
+		if (depth >= node.getDepth()) {
+			((LinkedList<Node>) super.queue).push(node);
+		}
 	}
-	
+
 	@Override
 	public void add(ArrayList<Node> nodes) {
 		for (int i = nodes.size() - 1; i >= 0; i--) {
@@ -40,7 +42,6 @@ public class IDS extends QueuingFunction {
 		if (((LinkedList<Node>) queue).isEmpty()) {
 			depth++;
 			if (depth <= Integer.MAX_VALUE) {
-				// System.out.println(depth);
 				super.queue = new LinkedList<Node>();
 				this.problem.emptyStateSpace();
 				add(this.problem.getNode());
