@@ -5,13 +5,13 @@ import java.util.HashSet;
 
 import search.QueuingFunction;
 
-
+// A search problem class is a generic definition for any problem that can be defined.
 public abstract class Problem {
 	
 	protected Node initialNode;
 	protected HashSet<State> statespace;
 	protected Operator[] operators;
-	protected int expandedNodes;
+	protected int expandedNodes; // The number of the expanded nodes in the search procedure
 	
 	public Node getNode() {
 		return this.initialNode;

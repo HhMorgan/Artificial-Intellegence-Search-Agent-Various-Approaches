@@ -48,6 +48,6 @@ public class Node implements Comparable<Node> {
 		if (this.getOperator() != null) {
 		      return this.getParent() + "," + String.valueOf(this.getOperator());
 		    }
-		    return "";
+		return "";
 	}
 }

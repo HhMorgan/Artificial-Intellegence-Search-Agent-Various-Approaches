@@ -10,13 +10,11 @@ import generic.Node;
 import generic.Problem;
 import generic.State;
 
-//A problem is a 5 tuple which states the problem and has the initial state of the world.
 public class EndGame extends Problem {
-	// Directions are mapped based on D-pad clockwise
-	// movement where the start is the up direction.
+	// Directions are mapped based on the following left, right, up, down
 	static final byte[] movementX = { 0, 0, -1, 1 };
 	static final byte[] movementY = { -1, 1, 0, 0 };
-	// String[] movement = { "up", "right", "down", "left" };
+	// Stores the coordinates of Thanos, the Warriors, and the Stones.
 	private Cell[] coordinates;
 
 	public EndGame(State initialState, Cell[] coordinates) {
@@ -34,7 +32,8 @@ public class EndGame extends Problem {
 	public void addState(State state) {
 		this.statespace.add((AvengersState) state);
 	}
-
+	
+	//removes a state from the state space.
 	public void removeState(State state) {
 		this.statespace.remove((AvengersState) state);
 	}
