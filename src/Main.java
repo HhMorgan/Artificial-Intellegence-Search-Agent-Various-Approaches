@@ -270,10 +270,10 @@ public class Main {
 //		String grid = "15,15;12,13;5,7;7,0,9,14,14,8,5,8,8,9,8,4;6,6,4,3,10,2,7,4,3,11";
 		printGrid(grid);
 		long startTime = System.currentTimeMillis();
-		System.out.println(solve(grid, "AS2", false));
+		System.out.println(solve(grid, "UC", false));
 		long stopTime = System.currentTimeMillis();
 		long elapsedTime = stopTime - startTime;
-		System.out.println(elapsedTime + " Miliseconds");
+		System.out.println(elapsedTime + " Milliseconds");
 
 	}
 }

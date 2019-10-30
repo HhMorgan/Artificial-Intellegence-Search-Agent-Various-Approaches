@@ -38,7 +38,7 @@ public class Kill extends GeneralLookUpInspection {
 
 		}
 		AvengersState successorState = new AvengersState(SuccessorGridStatus);
-		int inflicted = problem.pathCost(successorState) + this.getCost(); // The inflicted damage to Iron Man in the state.
+		int inflicted = problem.pathCost(successorState) + (this.getCost() * this.warriorLength); // The inflicted damage to Iron Man in the state.
 		int costSuccessor = node.getPathCost() + inflicted; // The new path cost including the inflicted cost in the state.
 		Node successorNode = new Node(successorState, this.getName(), costSuccessor, node.getDepth() + 1, node);
 		return successorNode;

@@ -19,7 +19,7 @@ public class EndGame extends Problem {
 
 	public EndGame(State initialState, Cell[] coordinates) {
 		this.coordinates = coordinates;
-		this.initialNode = new Node(initialState, null, pathCost(initialState), 0, null);
+		this.initialNode = new Node(initialState, null, 0, 0, null);
 		this.statespace = new HashSet<State>();
 		this.statespace.add(initialState);
 	}
