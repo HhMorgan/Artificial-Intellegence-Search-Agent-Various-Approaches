@@ -23,6 +23,6 @@ public abstract class Operator {
 	}
 	
 	// The function that generates the successor state node depending on the operator applied.
-	public abstract Node transition(Problem problem,Node node);
+	public abstract Node applyOperator(Problem problem,Node node);
 	
 }
