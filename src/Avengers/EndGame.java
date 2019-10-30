@@ -221,6 +221,7 @@ public class EndGame extends Problem {
 		AvengersState state = (AvengersState) node.getState();
 		Cell iron = state.getIron();
 		byte[] status = state.getStatus();
+		boolean isCollectedStones = isCollectedStones(node);
 		int predictedCost = 0;
 		boolean stoneAdjacentThanos = false; // Flag that indicates any stone is adjacent to Thanos.
 		int warriorInitialIndex = modifiedBinarySearch(Arrays.copyOfRange(status, 1, status.length), 0,
@@ -228,13 +229,13 @@ public class EndGame extends Problem {
 		int warriorsInspectIndex;
 		for (int i = 2; i < status.length; i++) {
 			int index = status[i];
-			if (index < 8) {
+			if (index < 8 && !isCollectedStones) {
 				predictedCost += 3; // The cost of collecting the remaining stones.
 				Cell inspectedStone = getCoordinates()[index];
 				for (int j = 0; j <= 3; j++) { // Checks if any stone is adjacent to Thanos.
 					if (inspectedStone.getX() + movementX[j] == getCoordinates()[1].getX()
 							&& inspectedStone.getY() + movementY[j] == getCoordinates()[1].getY()) {
-						predictedCost += 5;
+						predictedCost += 10;
 						stoneAdjacentThanos = true;
 						break;
 					}
@@ -242,7 +243,7 @@ public class EndGame extends Problem {
 				if (warriorInitialIndex >= 0) { // Checks if any stone is adjacent to any warrior.
 					warriorsInspectIndex = warriorInitialIndex;
 					for (; warriorsInspectIndex < status.length; warriorsInspectIndex++) {
-						Cell inspectedWarrior = getCoordinates()[warriorsInspectIndex];
+						Cell inspectedWarrior = getCoordinates()[status[warriorsInspectIndex]];
 						for (int j = 0; j <= 3; j++) {
 							if (inspectedStone.getX() + movementX[j] == inspectedWarrior.getX()
 									&& inspectedStone.getY() + movementY[j] == inspectedWarrior.getY()) {
@@ -257,7 +258,8 @@ public class EndGame extends Problem {
 				break;
 			}
 		}
-		if (node.getOperator() == null || !node.getOperator().equals("snap")) { // Calculates the cost of reaching Thanos' cell before Snapping.
+		if (node.getOperator() == null || !node.getOperator().equals("snap")) { // Calculates the cost of reaching
+																				// Thanos' cell before Snapping.
 			if (!((iron.getX() == getCoordinates()[1].getX()) && (iron.getY() == getCoordinates()[1].getY()))) {
 				boolean isThanosAdjacent = false;
 				for (int j = 0; j < 3; j++) {
@@ -266,16 +268,13 @@ public class EndGame extends Problem {
 						isThanosAdjacent = true;
 					}
 				}
-				// To not calculate the cost of going to a cell adjacent to Thanos before Thanos multiple times.
-				if (!(isCollectedStones(node) && isThanosAdjacent) && !stoneAdjacentThanos) { 
+				// To not calculate the cost of going to a cell adjacent to Thanos before Thanos
+				// multiple times.
+				if (!(isCollectedStones && isThanosAdjacent) && !stoneAdjacentThanos) {
 					predictedCost += 10;
-				} else {
-			          if (!(isCollectedStones(node) && isThanosAdjacent)) {
-				            predictedCost += 5;
-				          }
-				        }
+				}
 			} else {
-				if (isCollectedStones(node)) { // Already in Thanos' cell.
+				if (isCollectedStones) { // Already in Thanos' cell.
 					predictedCost += 5;
 				}
 			}
