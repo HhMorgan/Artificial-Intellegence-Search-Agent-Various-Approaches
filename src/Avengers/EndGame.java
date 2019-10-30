@@ -235,7 +235,11 @@ public class EndGame extends Problem {
 				for (int j = 0; j <= 3; j++) { // Checks if any stone is adjacent to Thanos.
 					if (inspectedStone.getX() + movementX[j] == getCoordinates()[1].getX()
 							&& inspectedStone.getY() + movementY[j] == getCoordinates()[1].getY()) {
-						predictedCost += 10;
+						if(iron.getX() == inspectedStone.getX() && iron.getY() == inspectedStone.getY()) {
+							predictedCost += 5;
+						} else {
+							predictedCost += 10;
+						}
 						stoneAdjacentThanos = true;
 						break;
 					}
