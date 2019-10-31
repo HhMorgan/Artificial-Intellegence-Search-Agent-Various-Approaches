@@ -3,9 +3,10 @@ package AvengersOperators;
 import java.util.Arrays;
 import Avengers.AvengersState;
 import generic.Node;
+import generic.Operator;
 import generic.Problem;
 
-public class Kill extends GeneralLookUpInspection {
+public class Kill extends Operator {
 
 	private int[] warriorLocations; // The indices of the adjacent warriors.
 	private int warriorLength; // The number of adjacent warriors.
