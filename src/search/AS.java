@@ -8,7 +8,11 @@ import generic.Node;
 
 
 public class AS extends QueuingFunction {
-
+	/*
+	 * A* Search is implemented in a similar manner as the Uniform Cost Search. The priority queue comparator function is 
+	 * overridden to  consider the summation of the path cost value and the value of the heuristics. For the A* Search to 
+	 * be generic to any search problem, the function interface is used. 
+	 */
 	public AS(Function<Node, Integer> heuristicFunc) {
 		super.queue = new PriorityQueue<Node>(new Comparator<Node>() {
 

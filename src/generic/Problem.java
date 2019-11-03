@@ -43,6 +43,10 @@ public abstract class Problem {
 	
 	public abstract ArrayList<Node> expand(Node node);
 	
+	/*
+	 * Initially the initial node of the problem is enqueued to the queue. Afterwards, the procedure iterates on the queue till it is 
+	 * empty, expands each node, adds the expanded state to the state space, and enqueues the generated nodes in the queue.
+	 */
 	public Node search(QueuingFunction nodes) {
 		nodes.add(getNode());
 		addState(getNode().getState());

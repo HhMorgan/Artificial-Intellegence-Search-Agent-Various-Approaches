@@ -7,6 +7,12 @@ import generic.Node;
 import generic.Problem;
 
 public class IDS extends QueuingFunction {
+	
+	/*
+	 * Iterative Deepening Search is implemented with a linked list, the implementation of the Iterative Deepening Search strategy is like the implementation of the 
+	 * Depth First Search; however Iterative Deepening  Search has a  cutoff depth at each iteration. The difference  is in the add and isEmpty functions, where the 
+	 * add function checks for the cutoff value at the iteration, isEmpty function starts the search over from the root and increase the value of the cutoff.  
+	 */
 
 	Problem problem;
 	int depth = 0;

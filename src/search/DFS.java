@@ -5,7 +5,12 @@ import java.util.LinkedList;
 import generic.Node;
 
 public class DFS extends QueuingFunction {
-
+	/*
+	 * Depth First Search is implemented with a linked list, as linked lists allow insertion and removal at arbitrary 
+	 * positions elements in constant  time through  positions given by an  iterator, and not indexing. Therefore for 
+	 * the strict use used in search  problem, it  was observed that  linked lists have  better  computational  time. 
+	 * Moreover, linked list has the stack push and pop functions pre-implemented.
+	 */
 	public DFS() {
 		super.queue = new LinkedList<Node>();
 	}

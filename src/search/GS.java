@@ -7,6 +7,13 @@ import java.util.function.Function;
 import generic.Node;
 
 public class GS extends QueuingFunction {
+	
+	/*
+	 * Greedy Search is implemented in a similar manner as the Uniform Cost Search. The priority queue comparator function is 
+	 * overridden to only consider  the value  of the heuristics. For the Greedy Search to be generic to  any search problem, 
+	 * the function interface is used, which allows  to pass a function as  an argument to the constructor.  Furthermore, the 
+	 * input and output types for the variables must be specified in the definition of the variable. 
+	 */
 
 	public GS(Function<Node, Integer> heuristicFunc) {
 

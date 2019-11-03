@@ -7,7 +7,11 @@ import generic.Node;
 
 
 public class BFS extends QueuingFunction{
-	
+		/*
+		 *  Breadth First Search is implemented with a linked list, where each element is added in the end of the queue, and the element 
+		 *  dequeued is removed from the head of the linked list. The $add$ a list of the generated nodes function adds the nodes in the 
+		 *  order it was given. 
+		 */
 		public BFS() {
 			super.queue = new LinkedList<Node>();
 		}
