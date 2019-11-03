@@ -2,14 +2,18 @@ package generic;
 
 import generic.State;
 
-//A node is the state of the world at a given time step.
+/*
+ * The generic class Node is defined as the structure {state, depth, parent, operator, cost}, all the instance
+ * variables are generic  to be able to solve  any  problem  that can be defined. Node  implements comparable, 
+ * where the nodes are compared by the value of the path cost, cost. 
+ */
 public class Node implements Comparable<Node> {
 
-	protected State state;
-	private int depth;
-	private Node parent;
-	private String operator;
-	private int cost;
+	protected State state; // The state of the world.
+	private int depth; // The depth of the given node in the search tree.
+	private Node parent; // The parent node of the given node.
+	private String operator; // The operator used to reach the given node.
+	private int cost; // The cost of the path from the root to the given node.
 
 	public Node(State state, String operator, int cost, int depth, Node parent) {
 		this.state = state;
